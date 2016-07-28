@@ -24,7 +24,7 @@
 \usepackage[acronym,toc]{glossaries} % Enables the generation of glossaries and lists fo acronyms. This package has to be included last.
 
 % Define convenience functions to use the author name and the thesis title in the PDF document properties.
-\newcommand{\authorname}{Forename Surname} % The author name without titles.
+\newcommand{\authorname}{Kevin Haller} % The author name without titles.
 \newcommand{\thesistitle}{Title of the Thesis} % The title of the thesis. The English version should be used, if it exists.
 
 % Set PDF document properties
@@ -49,7 +49,7 @@
 % Set persons with 4 arguments:
 %  {title before name}{name}{title after name}{gender}
 %  where both titles are optional (i.e. can be given as empty brackets {}).
-\setauthor{Pretitle}{\authorname}{Posttitle}{female}
+\setauthor{}{\authorname}{}{male}
 \setadvisor{Pretitle}{Forename Surname}{Posttitle}{male}
 
 % For bachelor and master theses:
@@ -66,8 +66,8 @@
 
 % Required data.
 \setaddress{Address}
-\setregnumber{0123456}
-\setdate{01}{01}{2001} % Set date with 3 arguments: {day}{month}{year}.
+\setregnumber{1325694}
+\setdate{01}{08}{2016} % Set date with 3 arguments: {day}{month}{year}.
 \settitle{\thesistitle}{Titel der Arbeit} % Sets English and German version of the title (both can be English or German).
 \setsubtitle{Optional Subtitle of the Thesis}{Optionaler Untertitel der Arbeit} % Sets English and German version of the subtitle (both can be English or German).
 
