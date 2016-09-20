@@ -137,17 +137,33 @@
 \chapter{Introduction}
 
 \section{Motivation}
-\todo{Enter your text here.}
+\todo{Intro Web of Documents, missed potential, isolated data sources}
+
+The same applies at the moment to the Vienna University of Technology. In order to find a special location like a certain lecture hall and how it can be accessed without obstacles like stairways, one has to search for information on web sites, scan floor plans and eventually construct a convenient route to the location based on the gathered knowledge. For humans this procedure does not constitute a problem, but think of machines.
+\todo{Elaborate on problem for machines, Deep learning, NLP state of the art reference}
+ %Web sites are usually designed to present information in a human-readable way and as for images there is in general at the moment of writing no sophisticated approach to interpret such content by machines without additional support of humans. 
+
+As a consequence the barrier for application developers is quite high due to the time consuming task of gathering and extracting the data from multiple sources and transforming it into a representation that is usable by the planned application.
+
+\todo{Linked Data, goal of thesis}
 
 \section{Problem description}
-\todo{Enter your text here.}
+
+
+\todo{more comprehensive description}
+
+\begin{itemize}
+	\item prototype of a map application based on the transformation of spatial data of the Vienna University of Technology into Linked Data to evaluate and discuss the potential benefits and caveats. 
+	\item prototype of an ontology to model spatial data as well as the indoor plans of facilities taking accessibility into consideration. In compliance to best practises terms of already existing ontologies shall be reused whenever possible.
+	\item linking of the transformed spatial data with external sources like GeoNames or LinkedGeoData. 
+\end{itemize}
 
 \section{Structure of the thesis}
-This chapter outlined the motivation for writing this thesis and gave a description of the problems for which a solution will be suggested. The rest of this thesis is structured as follows: Chapter \ref{basic-concepts-chapter} discusses the basic concepts, principles and technologies that build the foundation of Linked Data and the Semantic Web. It is intended to be brief introduction for readers that are not familiar with this topic. Chapter \ref{related-work-chapter} provides a summary of past efforts in research and works related to the focus of this thesis. In the subsequent chapter \ref{solution-chapter} a solution for the given problems will be suggested and discussed. This includes prototype of an ontology that models the problem domain as well as an architectural prototype of a system that manages a subset of spatial data about the Vienna University of Technology in form of Linked Data and provides a human- and machine-friendly interface to it. Finally, the implemented solution is evaluated and conclusions are drawn in the last chapter \ref{discussion-chapter}. It provides furthermore an outlook to future work and potential improvements. 
+This chapter outlined the motivation for writing this thesis and gave a description of the problems for which a solution will be suggested. The rest of this thesis is structured as follows: Chapter \ref{background-chapter} discusses the basic concepts, principles and technologies that build the foundation of Linked Data and the Semantic Web. It is intended to be a brief introduction for readers that are not familiar with this topic. Chapter \ref{related-work-chapter} provides a summary of past efforts in research and works related to the focus of this thesis. In the subsequent chapter \ref{solution-chapter} a solution for the given problems will be suggested and discussed. This includes the prototype of an ontology that models the problem domain as well as an architectural prototype of a system that manages a subset of spatial data about the Vienna University of Technology in form of Linked Data and provides a human- and machine-friendly interface to it. Finally, the implemented solution is evaluated and conclusions are drawn in the last chapter \ref{discussion-chapter}. It provides furthermore an outlook to future work and potential improvements. 
 
 
-\chapter{Basic concepts}
-\label{basic-concepts-chapter}
+\chapter{Background}
+\label{background-chapter}
 
 \section{Semantic Web}
 \todo{Enter your text here.}
@@ -155,16 +171,81 @@ This chapter outlined the motivation for writing this thesis and gave a descript
 \section{RDF}
 \todo{Enter your text here.}
 
-\section{Ontologies}
+\section{Ontology}
+\todo{Enter your text here.}
+
+\subsection{RDFS}
+\todo{Enter your text here.}
+
+\subsection{OWL}
+\todo{Enter your text here.}
+
+\section{SPARQL}
 \todo{Enter your text here.}
 
 \chapter{Related Work}
 \label{related-work-chapter}
-\todo{Enter your text here.}
+
+\section{Linked Open Data based map applications}
+\label{related-work-map-app}
+\todo{Existing map application based on Linked Open Data, Southampton, Oxford, LODUM}
+
+\section{Geospatial ontologies}
+\label{related-work-geospatial-ontologies}
+\todo{Evaluation of existing spatial ontologies as related work for the designed ontology prototype}
+
+\subsection{WGS84}
+...
+
+\subsection{ISA Programme Location Core Vocabulary}
+...
+
+\subsection{schema.org}
+...
+
+\subsection{NeoGeo Geometry Ontology}
+...
+
+\subsection{GeoSPARQL}
+...
+
+\section{Accessibility ontologies}
+\label{related-work-accessibility-ontologies}
+\todo{Evaluation of accessibility ontologies as related work for the designed ontology prototype}
+
+\section{Indoor modelling}
+\label{related-work-accessibility-ontologies}
+\todo{Indoor modelling research}
 
 \chapter{Solution}
 \label{solution-chapter}
-\todo{Enter your text here.}
+
+\section{Data sources}
+\todo{A description of the data sources and the transformation process}
+
+\section{Prototype of ontology}
+\todo{Description of the developed ontology with newly created terms and reused ones, and why using GeoSPARQL and what are the disadvantages}
+
+\section{Architectural prototype}
+\todo{A description of the system, the different layers, integration, linking and web framework, REST API, used technologies}
+
+\subsection{System architecture}
+\todo{Description of the system architecture}
+
+\subsection{RDF Framework}
+\todo{Reasoning why using Sesame, not Apache Jena}
+
+\subsection{Linked Data management}
+\todo{Description of the data management and compliance to best practise}
+
+\subsection{Linking}
+\todo{Description of strategies for linking with external sources and to enrich the data}
+
+\subsection{Linked Data publishing}
+\todo{Description of the data publishing and compliance to best practise}
+
+\section{Web application}
+\todo{A more comprehensive presentation of the user interface for humans to show the targeted use case.}
 
 \chapter{Discussion}
 \label{discussion-chapter}
