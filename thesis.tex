@@ -2,12 +2,14 @@
 
 \documentclass[draft,final]{vutinfth} % Remove option 'final' to obtain debug information.
 
+\usepackage{listings}
 % Load packages to allow in- and output of non-ASCII characters.
 \usepackage{lmodern}        % Use an extension of the original Computer Modern font to minimize the use of bitmapped letters.
 \usepackage[T1]{fontenc}    % Determines font encoding of the output. Font packages have to be included before this line.
 \usepackage[utf8]{inputenc} % Determines encoding of the input. All input files have to use UTF8 encoding.
 
 % Extended LaTeX functionality is enables by including packages with \usepackage{...}.
+\usepackage{float}
 \usepackage{fixltx2e}   % Provides fixes for several errors in LaTeX2e.
 \usepackage{amsmath}    % Extended typesetting of mathematical expression.
 \usepackage{amssymb}    % Provides a multitude of mathematical symbols.
@@ -101,6 +103,10 @@
 
 \begin{document}
 
+% Acronyms
+\newacronym{geo}{GEO}{Basic Geo (WGS84 long/lat) Vocabulary}
+\newacronym{lov}{LOV}{Linked Open Vocabulary}
+
 \frontmatter % Switches to roman numbering.
 % The structure of the thesis has to conform to
 %  http://www.informatik.tuwien.ac.at/dekanat
@@ -148,7 +154,7 @@ As a consequence the barrier for application developers is quite high due to the
 \todo{Linked Data, goal of thesis}
 
 \section{Problem description}
-
+\label{intro-problem-description}
 
 \todo{more comprehensive description}
 
@@ -186,19 +192,41 @@ This chapter outlined the motivation for writing this thesis and gave a descript
 \chapter{Related Work}
 \label{related-work-chapter}
 
-\section{Linked Open Data based map applications}
-\label{related-work-map-app}
-\todo{Existing map application based on Linked Open Data, Southampton, Oxford, LODUM}
+In this chapter important efforts and research related to this thesis are outlined. Section \ref{related-work-geospatial-ontologies} describes and evaluates geospatial ontologies that were suggested by \cite{tandy_spatial_????} or discovered in the dataset of \gls{lov} through a systematic search.  
 
 \section{Geospatial ontologies}
 \label{related-work-geospatial-ontologies}
-\todo{Evaluation of existing spatial ontologies as related work for the designed ontology prototype}
+This section is going to outline common ontologies for describing geospatial data and to evaluate them from the perspective of the given problem description (see \ref{intro-problem-description}).The ontologies were either be suggested by \cite{tandy_spatial_????} or discovered in the dataset of \gls{lov} by common spatial search terms like \textit{'feature'}, \texit{'geometry'} or \textit{'location'}. \textit{Feature} and \textit{Geometry} are widely used terms in these ontologies and describe two different concepts of geospatial science. A \textit{feature}  is simply a spatial entity that can be everything from a building with fixed position to a movable food truck as long as it has a spatial extent. \textit{Geometry} as the name suggests is a certain geometric shape from points, lines to polygons. Geometric shapes can be used to describe  the spatial extent of \textit{features}.
 
-\subsection{WGS84}
-...
+\subsection{Basic Geo Vocabulary (WGS84)}
+\label{related-work-geospatial-ontologies-wgs84}
 
-\subsection{ISA Programme Location Core Vocabulary}
-...
+\gls{geo}\cite{brickley_basic_2003} is a lightweight ontology published by W3C to describe the position of a spatial \textit{feature} using the WGS84 geodetic reference datum\footnote{\url{http://en.wikipedia.org/wiki/World_Geodetic_System}} with the properties \texttt{longitude}, \texttt{latitude} and \texttt{attitude}. The general class \texttt{SpatialThing} is the domain of all these properties. Figure \ref{fig:related-work-geospatial-ontologies:wgs84} shows a visualization of this ontology.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{graphics/vocabularies/wgs84.png}
+    \caption{Visualization of Basic Geo Vocabulary}
+    \label{fig:related-work-geospatial-ontologies:wgs84}
+\end{figure}
+
+Advantages are it`s simplicity and popularity as an analysis of the LOD cloud\cite{research_group:_akws_lodstats_????} indicates. This analysis shows that \gls{geo} is used in \textbf{538} different datasets in the LOD cloud and is thereby the 4th most used ontology regarding usage in different datasets. It is used by big players like DBpedia\footnote{\url{http://dbpedia.org}}, LinkedGeoData\footnote{\url{http://linkedgeodata.org/About}} and GeoNames\footnote{\url{http://linkedgeodata.org/About}}. 
+Listing \ref{lst:related-work-geospatial-ontologies:wgs84-dbpedia} shows a data snippet of DBpedia describing the town square 'Karlsplatz' in Vienna with \gls{geo}.
+
+\begin{lstlisting}[frame=single, caption=Snippet of DBpedia, label={lst:related-work-geospatial-ontologies:wgs84-dbpedia}]
+@prefix dbr:  <http://dbpedia.org/resource/> .
+@prefix geo:  <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+
+dbr:Karlsplatz  rdf:type  geo:SpatialThing ;
+  rdfs:label  "Karlsplatz"@en , "Karlsplatz (Wien)"@de ;
+  geo:lat     "48.19916534423828125"^^xsd:float ;
+  geo:long    "16.370000839233398438"^^xsd:float .
+\end{lstlisting}
+
+\gls{geo} evolved into a standard for presenting the location of points of interest and  as pointed out by best practices \cite{hyland_best_2014}, the use of standardized ontologies to describe one`s data facilitates inclusion into the Web of Data. 
+
+However, this ontology is not sufficient for describing spatial data more complex than a single point in a coordinate reference system.
+
 
 \subsection{schema.org}
 ...
@@ -208,6 +236,17 @@ This chapter outlined the motivation for writing this thesis and gave a descript
 
 \subsection{GeoSPARQL}
 ...
+
+\subsection{ISA Programme Location Core Vocabulary}
+...
+
+
+\section{Linked Open Data based map applications}
+\label{related-work-map-app}
+
+
+\todo{Existing map application based on Linked Open Data, Southampton, Oxford, LODUM}
+
 
 \section{Accessibility ontologies}
 \label{related-work-accessibility-ontologies}
@@ -282,7 +321,7 @@ This chapter outlined the motivation for writing this thesis and gave a descript
 \printglossaries
 
 % Add a bibliography.
-\bibliographystyle{alpha}
-\bibliography{intro}
+\bibliographystyle{plain}
+\bibliography{thesis}
 
 \end{document}
