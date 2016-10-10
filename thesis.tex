@@ -45,8 +45,6 @@
 \setlength{\parindent}{0pt} % Remove paragraph identation (optional).
 
 
-\newacronym{lod}{LOD}{Linked Open Data}
-
 \makeindex      % Use an optional index.
 \makeglossaries % Use an optional glossary.
 %\glstocfalse   % Remove the glossaries from the table of contents.
@@ -101,11 +99,32 @@
 % Define convenience macros.
 \newcommand{\todo}[1]{{\color{red}\textbf{TODO: {#1}}}} % Comment for the final version, to raise errors.
 
-\begin{document}
-
 % Acronyms
+\newacronym{ld}{LD}{Linked Data}
+\newacronym{lod}{LOD}{Linked Open Data}
+
+\newacronym{tuv}{TU Vienna}{Vienna University of Technology}
+
+\newacronym{rdf}{RDF}{Resource description framework}
+\newacronym{rdfa}{RDFa}{\gls{rdf} in Attributes}
+\newacronym{sparql}{SPARQL}{SPARQL protocol and \gls{rdf} query language}
+
 \newacronym{geo}{GEO}{Basic Geo (WGS84 long/lat) Vocabulary}
+\newacronym{iri}{IRI}{Internationalized Resource Identifier}
+\newacronym{geom}{GEOM}{NeoGeo Geometry Ontology}
+\newacronym{spatial}{SPATIAL}{NeoGeo Spatial Ontology}
+\newacronym{locn}{LOCN}{ISA Programme Location Core Vocabulary}
+
+\newacronym{rooms}{ROOMS}{Buildings and Rooms Vocabulary}
+\newacronym{oxp}{OXP}{OxPoints ontology}
+\newacronym{limap}{LIMAP}{LODUM Indoor Mapping Ontology}
+
 \newacronym{lov}{LOV}{Linked Open Vocabulary}
+
+\newacronym{wkt}{WKT}{Well-known text}
+\newacronym{gml}{GML}{Geography Markup Language}
+
+\begin{document}
 
 \frontmatter % Switches to roman numbering.
 % The structure of the thesis has to conform to
@@ -143,30 +162,44 @@
 \chapter{Introduction}
 
 \section{Motivation}
-\todo{Intro Web of Documents, missed potential, isolated data sources}
+Today`s universities usually have to manage a significant amount of information and have to provide systems to handle common services like finding and booking courses for students. As the current time demands it, those services are often provided over web sites participating in the Web of Documents (see figure \ref{fig:motiviation-web-of-documents}). The domain of a university is quite complex and as a consequence it is likely that different isolated information systems handling a particular part of the domain evolve; resulting in an environment, where information is distributed over multiple disconnected data silos that may have different formats and/or data owners. Such a situation prevents universities of fully exploiting their data \cite{zablith_consuming_2011}. 
 
-The same applies at the moment to the Vienna University of Technology. In order to find a special location like a certain lecture hall and how it can be accessed without obstacles like stairways, one has to search for information on web sites, scan floor plans and eventually construct a convenient route to the location based on the gathered knowledge. For humans this procedure does not constitute a problem, but think of machines.
-\todo{Elaborate on problem for machines, Deep learning, NLP state of the art reference}
- %Web sites are usually designed to present information in a human-readable way and as for images there is in general at the moment of writing no sophisticated approach to interpret such content by machines without additional support of humans. 
+\begin{figure}[h]
+    \centering    
+    \includegraphics[width=0.75\textwidth]{graphics/webOfDocuments.png}
+    \caption{Illustration of the Web of Documents}
+    \label{fig:motiviation-web-of-documents}
+\end{figure}
 
-As a consequence the barrier for application developers is quite high due to the time consuming task of gathering and extracting the data from multiple sources and transforming it into a representation that is usable by the planned application.
+The same applies at the moment to the \gls{tuv}. In order to find a special location like a certain lecture hall and how it can be accessed without obstacles like stairways for persons with mobility-impairments, one has to search for information on different web sites, scan floor plans and eventually construct a convenient route to the location based on the gathered knowledge. For humans this procedure does not constitute a problem, but think of machines. The process of information retrieval through for example data mining or understanding natural language is quite difficult and/or time consuming. As a consequence application developers that may have innovative ideas, which would benefit the information environment of the university, face a barrier that is hard to overcome. \gls{ld} is one way to transform all this information published on multiple web pages into a university-wide data space.
 
-\todo{Linked Data, goal of thesis}
+\begin{quote} \gls{ld} describes a method of publishing structured data so that it can be interlinked and become more useful. It builds upon standard Web technologies, but rather than using them to serve web pages for human readers, it extends them to share information in a way that can be read automatically by computers. This enables data from different sources to be connected and queried
+\cite{bizer_linked_2009}.\end{quote}
+
+This thesis aims to show the potential that could evolve, if spatial data about \gls{tuv} is transformed into a machine-readable form such as \gls{ld}, by proposing a prototype of a map application based on a subset of spatial data about \gls{tuv}. This subset is intended to comply with the principles of \gls{ld} \cite{berners-lee_linked_2009} and to fulfil the submission criteria to the Linking Open Data cloud\footnote{\url{http://lod-cloud.net/}}, which are as follows \cite{cyganiak_linking_2011}:
+
+\begin{itemize}
+	\item There must be resolvable \texttt{http://} (or \texttt{https://}) URIs.
+	\item They must resolve, with or without content negotiation, to RDF data in one of the popular RDF formats (RDFa, RDF/XML, Turtle, N-Triples).
+	\item The dataset must contain at least 1000 triples.
+	\item The dataset must be connected via RDF links to a dataset that is already in the diagram. This means, either your dataset must use URIs from the other dataset, or vice versam. We arbitrarily require at least 50 links.
+	\item Access of the entire dataset must be possible via RDF crawling, via an RDF dump, or via a SPARQL endpoint.
+\end{itemize}
+
 
 \section{Problem description}
 \label{intro-problem-description}
 
-\todo{more comprehensive description}
+As already mentioned does the \gls{tuv} distribute spatial information over different sources. Few of this spatial data is actually in a machine-readable format, so that it can be transformed into \gls{ld} automatically. The \textbf{\textit{1st problem}} to solve is therefore the transformation process of the unstructured part of the data into a machine-readable format. Section \ref{solution-data-acquisition} is suggesting a solution for this problem.
 
-\begin{itemize}
-	\item prototype of a map application based on the transformation of spatial data of the Vienna University of Technology into Linked Data to evaluate and discuss the potential benefits and caveats. 
-	\item prototype of an ontology to model spatial data as well as the indoor plans of facilities taking accessibility into consideration. In compliance to best practises terms of already existing ontologies shall be reused whenever possible.
-	\item linking of the transformed spatial data with external sources like GeoNames or LinkedGeoData. 
-\end{itemize}
+The \textbf{\textit{2nd problem}} is how the structured spatial data shall be described so that it can be easily used by application developers as well as integrated into the Web of Data. The developed ontology shall be compliant to the best practises for publishing ontologies \cite{berrueta_best_2008}. Section \ref{solution-ontology-prototype} is suggesting a prototype of an ontology by taking already existing approaches (see section \ref{related-work-geospatial-ontologies} and \ref{related-work-indoor-modelling}) into consideration.
+
+After the spatial data was transformed into \gls{ld}, a system must be designed to expose this data on the Web in order to qualify as \gls{lod}, representing the \textbf{\textit{3rd problem}} to solve. The solution shall take best practises for publishing \gls{ld}\cite{hyland_best_2014} and best practises for spatial data on the Web\cite{tandy_spatial_2016} into consideration. Section \ref{solution-architectural-prototype} is proposing an architectural prototype of such a system.
+
+The \textbf{\textit{4th problem}} is the development of a map application that is based on the resulting \gls{lod}. The application shall answer the following question: \textit{"Give me all learning rooms that are nearby that are free in a given time range and are accessible without obstacles for person with mobility-impairments"} to show the potential of the data. Section \ref{solution-map-application} presents a solution to this problem.
 
 \section{Structure of the thesis}
-This chapter outlined the motivation for writing this thesis and gave a description of the problems for which a solution will be suggested. The rest of this thesis is structured as follows: Chapter \ref{background-chapter} discusses the basic concepts, principles and technologies that build the foundation of Linked Data and the Semantic Web. It is intended to be a brief introduction for readers that are not familiar with this topic. Chapter \ref{related-work-chapter} provides a summary of past efforts in research and works related to the focus of this thesis. In the subsequent chapter \ref{solution-chapter} a solution for the given problems will be suggested and discussed. This includes the prototype of an ontology that models the problem domain as well as an architectural prototype of a system that manages a subset of spatial data about the Vienna University of Technology in form of Linked Data and provides a human- and machine-friendly interface to it. Finally, the implemented solution is evaluated and conclusions are drawn in the last chapter \ref{discussion-chapter}. It provides furthermore an outlook to future work and potential improvements. 
-
+This chapter outlined the motivation for writing this thesis and gave a description of the problems for which a solution will be suggested. The rest of this thesis is structured as follows: Chapter \ref{background-chapter} discusses the basic concepts, principles and technologies that build the foundation of \gls{ld} and the Semantic Web. It is intended to be a brief introduction for readers that are not familiar with this topic. Chapter \ref{related-work-chapter} provides a summary of past efforts in research and works related to the focus of this thesis. In the subsequent chapter \ref{solution-chapter} a solution for the given problems will be suggested and discussed. This includes the prototype of an ontology that models the problem domain as well as an architectural prototype of a system that manages a subset of spatial data about the \gls{tuv} in form of \gls{ld} and provides a human- and machine-friendly interface to it. Finally, the implemented solution is evaluated and conclusions are drawn in the last chapter \ref{discussion-chapter}. It provides furthermore an outlook to future work and potential improvements. 
 
 \chapter{Background}
 \label{background-chapter}
@@ -175,6 +208,7 @@ This chapter outlined the motivation for writing this thesis and gave a descript
 \todo{Enter your text here.}
 
 \section{RDF}
+\gls{rdf}
 \todo{Enter your text here.}
 
 \section{Ontology}
@@ -187,16 +221,19 @@ This chapter outlined the motivation for writing this thesis and gave a descript
 \todo{Enter your text here.}
 
 \section{SPARQL}
+\gls{sparql}
 \todo{Enter your text here.}
 
 \chapter{Related Work}
 \label{related-work-chapter}
 
-In this chapter important efforts and research related to this thesis are outlined. Section \ref{related-work-geospatial-ontologies} describes and evaluates geospatial ontologies that were suggested by \cite{tandy_spatial_????} or discovered in the dataset of \gls{lov} through a systematic search.  
+In this chapter important efforts and research related to this thesis are outlined. Section \ref{related-work-geospatial-ontologies} describes and evaluates geospatial ontologies that were suggested by \cite{tandy_spatial_2016} or discovered in the dataset of \gls{lov} through a systematic search. Section \ref{related-work-map-app} lists already existing map applications that are based on \gls{lod} and describes their capabilities. The final section \ref{related-work-indoor-modelling} describes done research and designed ontologies for modelling indoor environments.
 
 \section{Geospatial ontologies}
 \label{related-work-geospatial-ontologies}
-This section is going to outline common ontologies for describing geospatial data and to evaluate them from the perspective of the given problem description (see \ref{intro-problem-description}).The ontologies were either be suggested by \cite{tandy_spatial_????} or discovered in the dataset of \gls{lov} by common spatial search terms like \textit{'feature'}, \texit{'geometry'} or \textit{'location'}. \textit{Feature} and \textit{Geometry} are widely used terms in these ontologies and describe two different concepts of geospatial science. A \textit{feature}  is simply a spatial entity that can be everything from a building with fixed position to a movable food truck as long as it has a spatial extent. \textit{Geometry} as the name suggests is a certain geometric shape from points, lines to polygons. Geometric shapes can be used to describe  the spatial extent of \textit{features}.
+This section is going to outline common ontologies for describing geospatial data and to evaluate them from the perspective of the given problem description (see \ref{intro-problem-description}).The ontologies were either be suggested by \cite{tandy_spatial_2016} or discovered in the dataset of \gls{lov} by common spatial search terms like \textit{'feature'}, \textit{'geometry'} or \textit{'location'}. \textit{Feature} and \textit{Geometry} are widely used terms in these ontologies and describe two different concepts of geospatial science. A \textit{feature}  is simply a spatial entity that can be everything from a building with fixed position to a movable food truck as long as it has a spatial extent. \textit{Geometry} as the name suggests is a certain geometric shape from points, lines to polygons. Geometric shapes can be used to describe  the spatial extent of \textit{features}.
+
+The ontologies are visualized using the VOWL2 notation\cite{lohmann_vowl_2014}. Classes are modelled as circles, properties in form of rectangles and data type properties point to a yellow rectangle representing the literal.
 
 \subsection{Basic Geo Vocabulary (WGS84)}
 \label{related-work-geospatial-ontologies-wgs84}
@@ -204,9 +241,9 @@ This section is going to outline common ontologies for describing geospatial dat
 \gls{geo}\cite{brickley_basic_2003} is a lightweight ontology published by W3C to describe the position of a spatial \textit{feature} using the WGS84 geodetic reference datum\footnote{\url{http://en.wikipedia.org/wiki/World_Geodetic_System}} with the properties \texttt{longitude}, \texttt{latitude} and \texttt{attitude}. The general class \texttt{SpatialThing} is the domain of all these properties. Figure \ref{fig:related-work-geospatial-ontologies:wgs84} shows a visualization of this ontology.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.75\textwidth]{graphics/vocabularies/wgs84.png}
-    \caption{Visualization of Basic Geo Vocabulary}
+    \centering    
+    \includegraphics[width=\columnwidth]{graphics/vocabularies/wgs84.png}
+    \caption{Visualization of \gls{geo}}
     \label{fig:related-work-geospatial-ontologies:wgs84}
 \end{figure}
 
@@ -223,49 +260,112 @@ dbr:Karlsplatz  rdf:type  geo:SpatialThing ;
   geo:long    "16.370000839233398438"^^xsd:float .
 \end{lstlisting}
 
-\gls{geo} evolved into a standard for presenting the location of points of interest and  as pointed out by best practices \cite{hyland_best_2014}, the use of standardized ontologies to describe one`s data facilitates inclusion into the Web of Data. 
+\gls{geo} evolved into a standard for presenting the location of points of interest and as described by \cite{hyland_best_2014} in an article about best practises, standardized ontologies shall be used wherever possible to facilitate
+inclusion into the Web of Data.
 
 However, this ontology is not sufficient for describing spatial data more complex than a single point in a coordinate reference system.
 
+\subsection{NeoGeo Geometry/Spatial Ontology}
+\gls{geom}\footnote{\url{http://geovocab.org/geometry}} is an ontology that aims to provide a comprehensive descriptive power for modelling geographic regions, whereas \gls{spatial}\footnote{\url{http://geovocab.org/spatial}} aims to describe topological relationships between \textit{features}. Both ontologies were designed to have a strict distinction between \textit{features} and \textit{geometries} \cite{norton_neogeo_2012}.
 
-\subsection{schema.org}
-...
+\subsubsection{\gls{geom}} 
+\gls{geom} follows the principle of modelling geometries in pure \gls{rdf}, which leads to a number of classes and properties for covering all shapes suggested by Simple Features Profile\footnote{\url{http://www.ogcnetwork.net/gml-sf}}. This includes points, lines and polygons. Shapes that go beyond a simple point are represented by a \gls{rdf} collection of \texttt{point} instances, whereby \texttt{point} is a external class of \gls{geo}.  
 
-\subsection{NeoGeo Geometry Ontology}
-...
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{graphics/vocabularies/geom.png}
+    \caption{Visualization of \gls{geom}}
+    \label{fig:related-work-geospatial-ontologies:geom}
+\end{figure}
+
+One advantage of this approach is that triple stores do not have to meet special requirements in order to enable the querying over geometric data like it is the case for GeoSPARQL. However, this shifts the burden of writing geometric queries to developers. A further problem is the high demand for resource identifiers or blank nodes (at least for each point of a shape), as the example of describing the geometry of Iceland shows\footnote{\url{http://nuts.geovocab.org/id/IS_geometry.ttl}}; this significantly increases the verbosity of the data without adding particular gains of expressitivity to the data\cite{battle_geosparql:_2011}. \gls{geom} has also a generic property \texttt{asWKT} for pointing to the \gls{wkt} serialization of a geometry, which has at the moment of writing the status 'deprecated'.
+
+LinkedGeoData and GeoNames use both the \texttt{geometry} property of this ontology to point to the \textit{geometry} of a \textit{feature}, but use other approaches to represent it.
+
+\subsubsection{\gls{spatial}}
+\gls{spatial} is an ontology that aims to provide properties to make topological relationships of \texttt{features} explicit, which else would only exist implicit in the geometric data. Figure \ref{fig:related-work-geospatial-ontologies:spatial} shows a visualization of this ontology. Included properties cover all topological relationships described by RCC-8. One problem of making the relationships explicit is that these relationships have to be adopted if the \textit{geometry} of \textit{features} changes.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{graphics/vocabularies/spatial.png}
+    \caption{Visualization of \gls{spatial}}
+    \label{fig:related-work-geospatial-ontologies:spatial}
+\end{figure}
+
 
 \subsection{GeoSPARQL}
 ...
 
-\subsection{ISA Programme Location Core Vocabulary}
-...
+\subsection{schema.org}
+schema.org\footnote{\url{http://schema.org/}} is an initiative that was started by Google, Bing and Yahoo! (subsequently joined by Yandex) to promote a common ontology for publishing structured data mark-up on web pages \cite{guha_introducing_2011}. This machine-readable information can then be extracted from web pages by search engines to improve search results.
 
+schema.org is a quite broad ontology covering a set of different domains from events, organizations to places. For this thesis especially the class \texttt{Place} is of interest describing entities with a fixed, physical extent; it has a set of more specific subclasses. This class has properties to assign an address to it`s instances  (\texttt{address}) as well as to provide geo-information (\texttt{geo}). The value of the property \texttt{geo} can either be instances of the class \texttt{GeoCoordinates} or \texttt{GeoShapes}. \texttt{GeoCoordinates} represents a point in a georeference system similar to \gls{geo}. \texttt{GeoShapes} on the other hand provide the ability to describe more complex geometric shapes including cirlces, boxes, polygons and simple lines. All those shapes are expressed in textual form following an own specific pattern, in contrast to GeoSparql, which declares the use of \gls{gml} or \gls{wkt}. However, such literals could be transformed into \gls{wkt} by string operations (supported in \gls{sparql}) except for the circle, which has no direct representation in \gls{wkt}.
+
+One advantage of this ontology is the visibility to search engines when exposed on web pages in one of the supported formats (Microdata\footnote{\url{https://www.w3.org/TR/microdata/}}, \gls{rdfa}\footnote{\url{https://www.w3.org/TR/rdfa-syntax/}} and JSON-LD\footnote{\url{http://json-ld.org/}}). As mentioned earlier, the embedded data can then be extracted and in fact major search engines crawl for it to enhance search results\cite{haas_enhanced_2011}. \todo{mention function}. There are furthermore odd ascriptions of properties  like that instances of the class \texttt{Beach} (subclass of \texttt{Place}) can have the property \texttt{faxNumber}; it must be considered that schema.org is meant for web masters to add structured metadata to their web sites \cite{veres_schema.org_2013} and not to describe a specific domain precisely.
+
+\subsection{ISA Programme Location Core Vocabulary}
+\gls{locn} is an ontology that provides a set of properties and classes to describe the geometry, address and location of a \textit{feature}. Figure \ref{fig:related-work-geospatial-ontologies:locn} shows a visualization of this ontology. It provides a comprehensive set of properties to describe the address of a \textit{feature}, but a mininal set for geometries or locations. For geometries this ontology suggests the use of external classes or a simple literal representing the serialization of the geometry in formats such as \gls{wkt} and \gls{gml}. Those suggested classes are \textit{Geometry} of GeoSPARQL with it`s more specific subclasses and \texttt{GeoCoordinates} as well as \texttt{GeoShapes} from schema.org. In case of representing simple points also \texttt{point} of \gls{geo} is mentioned. \cite{perego_isa_2015} Howerver, this quite broad range of possibilities does not make it easy for the consumer of such \gls{ld}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{graphics/vocabularies/locn.png}
+    \caption{Visualization of \gls{locn}}
+    \label{fig:related-work-geospatial-ontologies:locn}
+\end{figure}
 
 \section{Linked Open Data based map applications}
 \label{related-work-map-app}
 
+Multiple universities (e.g. Linked Universities\footnote{\url{http://linkeduniversities.org}}) exposed their public university data and map applications played out to be a common use case for this data.
 
-\todo{Existing map application based on Linked Open Data, Southampton, Oxford, LODUM}
+University of Münster started an Open Data initiative named LODUM\footnote{\url{http://lodum.de/}} from which a map application\footnote{\url{http://app.uni-muenster.de/Karte/}} evolved that shows the location of buildings and which departments are located in the selected building, but there is no deeper insight into the buildings. However, there is a publication of the initiative that deals with the issue of indoor navigation \cite{kostic_automated_2015-1}. Furthermore an indoor map ontology was designed (see section \ref{related-work-indoor-modelling-limap}).
 
+University of Southampton is a further university that exposed spatial information about their campus as \gls{lod}. In contrast to the map of the LODUM initiative Southampton`s map application\footnote{\url{http://maps.southampton.ac.uk/}} (see figure \ref{fig:related-work-map-app:southampton}) gives insight into buildings and shows the location of certain rooms with the ability to switch the floor. It shows also computer rooms with their current estimated capacity and opening hours.  
 
-\section{Accessibility ontologies}
-\label{related-work-accessibility-ontologies}
-\todo{Evaluation of accessibility ontologies as related work for the designed ontology prototype}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{graphics/maps/southampton-map-app.png}
+    \caption{Map application of University of Southampton}
+    \label{fig:related-work-map-app:southampton}
+\end{figure}
+
+University of Oxford has also exposed spatial information in form of \gls{lod} on their Open Data portal and developed an application named \textit{University Science Area Map} \footnote{\url{https://data.ox.ac.uk/explore/science-area/}}. It highlights buildings, where departments of a certain field are located, on a map. 
 
 \section{Indoor modelling}
-\label{related-work-accessibility-ontologies}
-\todo{Indoor modelling research}
+\label{related-work-indoor-modelling}
+Section \ref{related-work-geospatial-ontologies} outlined ontologies to describe the spatial extent of \textit{features} and topological relationships between them, but those ontologies are not intended for expressing the characteristics of \textit{features} in an indoor environment; like for example that a \textit{feature} is a learning room with certain opening hours or an elevator to get from one floor to another. This section discusses ontologies to model indoor environments that have been discovered in the repository of \gls{lov} by searching for terms such as \textit{'room'}, \textit{'building'} and \textit{'toilette'} or explored in datasets of map applications based on \gls{lod} (see section \ref{related-work-map-app}).
+
+\subsection{LIMAP}
+\label{related-work-indoor-modelling-limap}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{graphics/vocabularies/limap.png}
+    \caption{Visualization of \gls{limap}}
+    \label{fig:related-work-geospatial-ontologies:locn}
+\end{figure}
+
+\subsection{Other ontologies}
+\label{related-work-indoor-modelling-other-ontologies}
+\gls{rooms} provides a minimal set of classes and properties to describe the basic structure of a building. It has 6 classes \texttt{Building}, \texttt{Floor}, \texttt{FloorSection}, which is a named (identifiable) section of a floor,\texttt{Room} and \texttt{Desk} as well as \texttt{Site}, which describes an area of land like a campus.
+
+
+%DogOnt\footnote{\url{http://elite.polito.it/ontologies/dogont.owl}} is an ontology that aims to enable intelligent home automation. For this purpose it also includes concepts to model how the indoor environment is composed, whereas this is not the main focus; thus important elements of an indoor environment like corridors for example are missing.
+
 
 \chapter{Solution}
 \label{solution-chapter}
 
-\section{Data sources}
+\section{Data acquisition}
+\label{solution-data-acquisition}
 \todo{A description of the data sources and the transformation process}
 
 \section{Prototype of ontology}
+\label{solution-ontology-prototype}
 \todo{Description of the developed ontology with newly created terms and reused ones, and why using GeoSPARQL and what are the disadvantages}
 
 \section{Architectural prototype}
+\label{solution-architectural-prototype}
 \todo{A description of the system, the different layers, integration, linking and web framework, REST API, used technologies}
 
 \subsection{System architecture}
@@ -283,7 +383,8 @@ However, this ontology is not sufficient for describing spatial data more comple
 \subsection{Linked Data publishing}
 \todo{Description of the data publishing and compliance to best practise}
 
-\section{Web application}
+\section{Map application}
+\label{solution-map-application}
 \todo{A more comprehensive presentation of the user interface for humans to show the targeted use case.}
 
 \chapter{Discussion}
@@ -298,9 +399,6 @@ However, this ontology is not sufficient for describing spatial data more comple
 \section{Conclusion}
 
 \todo{Enter your text here.}
-
-% Remove following line for the final thesis.
-\input{intro.tex} % A short introduction to LaTeX.
 
 \backmatter
 
