@@ -258,7 +258,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="397.62773"
+     inkscape:cx="291.77323"
      inkscape:cy="280.58833"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -276,7 +276,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -659,25 +659,25 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:22.61649323px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="94.484024"
-       y="918.18115"
+       x="335.91257"
+       y="919.60968"
        id="text3646"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3648"
-         x="94.484024"
-         y="918.18115">Site A</tspan></text>
+         x="335.91257"
+         y="919.60968">Library Site</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:22.61928749px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="567.13611"
-       y="913.65302"
+       x="569.99323"
+       y="917.93872"
        id="text3646-8"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3648-4"
-         x="567.13611"
-         y="913.65302">Site C</tspan></text>
+         x="569.99323"
+         y="917.93872">Facility Site</tspan></text>
     <g
        id="g3550"
        transform="translate(260.31379,469.81835)">
@@ -820,14 +820,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:22.61649323px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="342.01593"
-       y="913.65088"
+       x="87.730217"
+       y="919.36517"
        id="text3646-2"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3648-7"
-         x="342.01593"
-         y="913.65088">Site B</tspan></text>
+         x="87.730217"
+         y="919.36517">Courses Site</tspan></text>
     <g
        id="g10580"
        transform="matrix(0.76328559,0,0,0.76328559,23.442644,433.31626)">
