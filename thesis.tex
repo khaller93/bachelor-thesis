@@ -56,7 +56,7 @@
 \setadvisor{Ao.Univ.Prof. Dipl.-Ing. Dr.techn. Mag.rer.soc.oec}{Stefan Biffl}{Univ.Doz.}{male}
 
 % For bachelor and master theses:
-\setfirstassistant{}{Reka Marta Sabou}{Project Ass.}{female}
+\setfirstassistant{...}{Reka Marta Sabou}{Project Ass.}{female}
 
 % For dissertations:
 %\setfirstreviewer{Pretitle}{Forename Surname}{Posttitle}{male}
@@ -103,7 +103,11 @@
 
 \newacronym{tuv}{TU Vienna}{Vienna University of Technology}
 
+\newacronym{xml}{XML}{Extensible Markup Language}
+\newacronym{json}{JSON}{JavaScript Object Notation}
 \newacronym{rdf}{RDF}{Resource description framework}
+\newacronym{rdfs}{RDFS}{\gls{rdf} Schema}
+\newacronym{owl}{OWL}{Web ontology language}
 \newacronym{rdfa}{RDFa}{\gls{rdf} in Attributes}
 \newacronym{rif}{RIF}{Rule Interchange Format}
 \newacronym{sparql}{SPARQL}{SPARQL protocol and \gls{rdf} query language}
@@ -124,6 +128,14 @@
 \newacronym{pdf}{PDF}{Portable Document Format}
 \newacronym{wkt}{WKT}{Well-known text}
 \newacronym{gml}{GML}{Geography Markup Language}
+
+%Define SPARQL listing
+\lstdefinelanguage{sparql}{
+morecomment=[l][\color{OliveGreen}]{\#},
+morestring=[b][\color{blue}]\",
+morekeywords={SELECT,CONSTRUCT,DESCRIBE,ASK,WHERE,FROM,NAMED,PREFIX,BASE,OPTIONAL,FILTER,GRAPH,LIMIT,OFFSET,SERVICE,UNION,EXISTS,NOT,BINDINGS,MINUS,a},
+sensitive=true
+}
 
 \begin{document}
 
@@ -286,15 +298,17 @@ However, this ontology is not sufficient for describing spatial data more comple
     \label{fig:related-work-geospatial-ontologies:ngeo}
 \end{figure}
 
-One advantage of this approach is that triple stores do not have to meet special requirements in order to enable the querying over geometric data like it is the case for GeoSPARQL. However, this shifts the burden of writing geometric queries to developers. A further problem is the high demand for resource identifiers or blank nodes (at least for each point of a shape), as the example of describing the geometry of Iceland shows\footnote{\url{http://nuts.geovocab.org/id/IS_geometry.ttl}}; this significantly increases the verbosity of the data without adding particular gains of expressitivity to the data\cite{battle_geosparql:_2011}. \gls{ngeo} has also a generic property \texttt{asWKT} for pointing to the \gls{wkt} serialization of a geometry, which has at the moment of writing the status 'deprecated'.
+One advantage of this approach is that triple stores do not have to meet special requirements in order to enable the querying over geometric data like it is the case for GeoSPARQL. However, this shifts the burden of writing geometric queries to developers. A further problem is the high demand for resource identifiers or blank nodes (at least for each point of a shape), as the example of describing the geometry of Iceland shows\footnote{\url{http://nuts.geovocab.org/id/IS_geometry.ttl}}; this significantly increases the verbosity of the data without adding particular gains of expressitivity to it\cite{battle_geosparql:_2011}. \gls{ngeo} has also a generic property \texttt{asWKT} for pointing to the \gls{wkt} serialization of a geometry, which has at the moment of writing the status 'deprecated'.
 
-LinkedGeoData and GeoNames use both the \texttt{geometry} property of this ontology to point to the \textit{geometry} of a \textit{feature}, but use other approaches to represent it.
+LinkedGeoData uses the \texttt{geometry} property of this ontology to point to the \textit{geometry} of a \textit{feature}, but the \texttt{asWKT} property of GeoSPARQL to represent the geometry.
 
 \subsubsection{\gls{spatial}}
 \gls{spatial} is an ontology that aims to provide properties to make topological relationships of \texttt{features} explicit, which else would only exist implicit in the geometric data. Included properties cover all topological relationships described by RCC-8 like does a \textit{feature} overlap with another \textit{feature}. One problem of making the relationships explicit is that these relationships have to be adopted if the \textit{geometry} of \textit{features} changes.
 
 \subsection{GeoSPARQL}
-GeoSPARQL defines a set of SPARQL extension functions, a set of \gls{rif} rules, and a core ontology for geographic information\cite{perry_ogc_2012}.
+GeoSPARQL defines a set of SPARQL extension functions, a set of \gls{rif} rules, and a core ontology for geographic information\cite{perry_ogc_2012}. Figure \ref{fig:related-work-geospatial-ontologies:geosparql} shows a visualization of this core ontology. It has two major classes namely \texttt{Feature} to represent spatial \textit{features} and \texttt{Geometry} to represent \textit{geometries}. An instance of \texttt{Geometry} can be assigned to an instance of \texttt{Feature} with the property \texttt{hasGeometry}. It is based on the Simple Features model\footnote{\url{http://www.ogcnetwork.net/gml-sf}} like \gls{ngeo}. However, GeoSPARQL defines two properties that can be used to point to the serialization of the geometry; either \texttt{asWKT} for \gls{wkt} or \texttt{asGML} for \gls{gml}. In contrast to \gls{ngeo}, where \textit{geometries} are represented in pure \gls{rdf}.
+
+\todo{advantages, disadvantages}
 
 \begin{figure}[h]
     \centering
@@ -308,7 +322,7 @@ schema.org\footnote{\url{http://schema.org/}} is an initiative that was started 
 
 schema.org is a quite broad ontology covering a set of different domains from events, organizations to places. For this thesis especially the class \texttt{Place} is of interest describing entities with a fixed, physical extent; it has a set of more specific subclasses. This class has properties to assign an address to it`s instances  (\texttt{address}) as well as to provide geo-information (\texttt{geo}). The value of the property \texttt{geo} can either be instances of the class \texttt{GeoCoordinates} or \texttt{GeoShapes}. \texttt{GeoCoordinates} represents a point in a georeference system similar to \gls{geo}. \texttt{GeoShapes} on the other hand provide the ability to describe more complex geometric shapes including cirlces, boxes, polygons and simple lines. All those shapes are expressed in textual form following an own specific pattern, in contrast to GeoSparql, which declares the use of \gls{gml} or \gls{wkt}. However, such literals could be transformed into \gls{wkt} by string operations (supported in \gls{sparql}) except for the circle, which has no direct representation in \gls{wkt}.
 
-One advantage of this ontology is the visibility to search engines when exposed on web pages in one of the supported formats (Microdata\footnote{\url{https://www.w3.org/TR/microdata/}}, \gls{rdfa}\footnote{\url{https://www.w3.org/TR/rdfa-syntax/}} and JSON-LD\footnote{\url{http://json-ld.org/}}). As mentioned earlier, the embedded data can then be extracted and in fact major search engines crawl for it to enhance search results\cite{haas_enhanced_2011}. \todo{mention function}. There are furthermore odd ascriptions of properties  like that instances of the class \texttt{Beach} (subclass of \texttt{Place}) can have the property \texttt{faxNumber}; it must be considered that schema.org is meant for web masters to add structured metadata to their web sites \cite{veres_schema.org_2013} and not to describe a specific domain precisely.
+One advantage of this ontology is the visibility to search engines when exposed on web pages in one of the supported formats (Microdata\footnote{\url{https://www.w3.org/TR/microdata/}}, \gls{rdfa}\footnote{\url{https://www.w3.org/TR/rdfa-syntax/}} and JSON-LD\footnote{\url{http://json-ld.org/}}). As mentioned earlier, the embedded data can then be extracted and in fact major search engines crawl for it to enhance search results\cite{haas_enhanced_2011}. However, there are odd ascriptions of properties like that instances of the class \texttt{Beach} (subclass of \texttt{Place}) can have the property \texttt{faxNumber}; it must be considered that schema.org is meant for web masters to add structured metadata to their web sites \cite{veres_schema.org_2013} and not to describe a specific domain precisely.
 
 \subsection{ISA Programme Location Core Vocabulary}
 \gls{locn} is an ontology that provides a set of properties and classes to describe the geometry, address and location of a \textit{feature}. Figure \ref{fig:related-work-geospatial-ontologies:locn} shows a visualization of this ontology. It provides a comprehensive set of properties to describe the address of a \textit{feature}, but a mininal set for geometries and locations. For geometries this ontology suggests the use of external classes or a simple literal representing the serialization of the geometry in formats such as \gls{wkt} and \gls{gml}. Those suggested classes are \textit{Geometry} of GeoSPARQL with it`s more specific subclasses and \texttt{GeoCoordinates} as well as \texttt{GeoShapes} from schema.org. In case of representing simple points also \texttt{point} of \gls{geo} is mentioned. \cite{perego_isa_2015} Howerver, this quite broad range of possibilities does not make it easy for the consumer of such \gls{ld}.
@@ -320,16 +334,13 @@ One advantage of this ontology is the visibility to search engines when exposed 
     \label{fig:related-work-geospatial-ontologies:locn}
 \end{figure}
 
-\subsection{Other ontologies}
-\label{related-work-other-ontologies}
-
 
 \section{Linked Open Data based map applications}
 \label{related-work-map-app}
 
 Multiple universities (e.g. Linked Universities\footnote{\url{http://linkeduniversities.org}}) exposed their public university data and map applications played out to be a common use case for this data.
 
-University of Münster started an Open Data initiative named LODUM\cite{kesler_linked_2012} from which a map application\footnote{\url{http://app.uni-muenster.de/Karte/}} evolved that shows the location of buildings and which departments are located in the selected building, but there is no deeper insight into the buildings. However, there is a publication of the initiative that deals with the issue of indoor navigation \cite{kostic_automated_2015-1}. Furthermore an indoor map ontology was designed (see section \ref{related-work-indoor-modelling-limap}).
+University of Münster started an Open Data initiative named LODUM\cite{kesler_linked_2012} from which a map application\footnote{\url{http://app.uni-muenster.de/Karte/}} evolved that shows the location of buildings and which departments are located in the selected building, but there is no deeper insight into the buildings. However, there is a publication of the initiative that deals with the issue of indoor navigation \cite{kostic_automated_2015-1}. Furthermore an indoor map ontology named LIMAP\footnote{\url{http://lodum.de/results/}} was designed.
 
 University of Southampton is a further university that exposed spatial information about their campus as \gls{lod}. In contrast to the map of the LODUM initiative Southampton`s map application\footnote{\url{http://maps.southampton.ac.uk/}} (see figure \ref{fig:related-work-map-app:southampton}) gives insight into buildings and shows the location of certain rooms with the ability to switch the floor. It shows also computer rooms with their current estimated capacity and opening hours.  
 
@@ -344,36 +355,30 @@ University of Oxford has also exposed spatial information in form of \gls{lod} o
 
 \section{Indoor modelling}
 \label{related-work-indoor-modelling}
-Section \ref{related-work-geospatial-ontologies} outlined ontologies to describe the spatial extent of \textit{features} and topological relationships between them, but those ontologies are not intended for expressing the characteristics of \textit{features} in an indoor environment; like for example that a \textit{feature} is a learning room with certain opening hours or an elevator to get from one floor to another. This section discusses ontologies to model indoor environments that have been discovered in the repository of \gls{lov} by searching for terms such as \textit{'room'}, \textit{'building'} and \textit{'toilette'} or explored in datasets of map applications based on \gls{lod} (see section \ref{related-work-map-app}).
+Section \ref{related-work-geospatial-ontologies} outlined ontologies to describe the spatial extent of \textit{features} and topological relationships between them, but those ontologies are not intended for expressing the characteristics of \textit{features} in an indoor environment; like for example that a \textit{feature} is a learning room with certain opening hours or an elevator to get from one floor to another. This section discusses previous efforts and ontologies to model indoor environments and also how to navigate in them.
 
-\subsection{LIMAP}
-\label{related-work-indoor-modelling-limap}
+IndoorGML\footnote{\url{http://indoorgml.net/}} is a \gls{xml} schema of OGC that aims to provide a framework for representing and exchanging indoor spatial information, but no efforts has yet been made to transform it`s model to the \gls{ld} domain. OntoNav presents a semantic indoor navigation system that aims to follow a user-centric paradigm in which the capabilities, limitations and preferences of the user are taken into consideration for computing the best suiting path. A path is according to OntoNav a sequence of connected corridors, passages (stairways, ramps, elevators, etc.) and exits from one location to another\cite{anagnostopoulos_ontonav:_2005}. ONALIN is a ontology that models the indoor environment similar to OntoNav, but it follows the approach of modeling buildings as network of hallways consisting of different points (start, decision and corner points); resulting in a finer granularity. ONALIN also takes the American Disability Act into consideration, which leads to properties for describing the height and number of steps of stairways or the height of sinks in a restroom \cite{dudas_onalin:_2009}. Both ontologies are at the moment not locatable over the Web. iLoc is an ontology that has a minimal set of classes to describe the internal structure of a building from rooms, floors to vertical passages like elevators and stairways. Points of interest like entrances and landmarks play a special role in the navigation. A route section connects then two points and asserts that there is a walk-able path between them. This route section can have certain constraints like an access control measurement is required or steps have to be climbed \cite{szasz_ilocbuilding_2010}.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=1.0\textwidth]{graphics/vocabularies/limap.png}
-    \caption{Visualization of \gls{limap}}
-    \label{fig:related-work-geospatial-ontologies:locn}
-\end{figure}
 
 \subsection{Other ontologies}
 \label{related-work-indoor-modelling-other-ontologies}
-\gls{rooms} provides a minimal set of classes and properties to describe the basic structure of a building. It has 6 classes \texttt{Building}, \texttt{Floor}, \texttt{FloorSection}, which is a named (identifiable) section of a floor,\texttt{Room} and \texttt{Desk} as well as \texttt{Site}, which describes an area of land like a campus.
+The ontologies mentioned in this section have been discovered in the repository of \gls{lov} by searching for terms such as \textit{'room'}, \textit{'building'} and \textit{'toilets'} or explored in datasets of map applications based on \gls{lod} (see section \ref{related-work-map-app}).
 
+\gls{rooms} provides a minimal set of classes and properties to describe the basic structure of a building. It has 6 classes \texttt{Building}, \texttt{Floor}, \texttt{FloorSection}, which is a named (identifiable) section of a floor,\texttt{Room} and \texttt{Desk} as well as \texttt{Site}, which describes an area of land like a campus.
 
 \chapter{Solution}
 \label{solution-chapter}
 
-This chapter suggests solutions for the given problem description (see \ref{intro-problem-description}). Section \ref{solution-data-acquisition} is dealing with the problem of transforming unstructured spatial data about the \gls{tuv} into a machine-readable format. The question of how this structured data shall be described is answered in section \ref{solution-ontology-prototype}, where a prototype of an ontology is discussed. The subsequent section \ref{solution-architectural-prototype} is proposing an architectural prototype of a system for integrating and publishing \gls{ld} consistent with the \gls{ld} principles \cite{berners-lee_linked_2009}. The final section \ref{solution-map-application} is presenting a map application to show the potential of the generated spatial \gls{lod}.
+This chapter suggests solutions for the given problem description (see \ref{intro-problem-description}). Section \ref{solution-data-acquisition} is dealing with the problem of transforming unstructured spatial data of the \gls{tuv} into a machine-readable format. The question of how this structured data shall be described is answered in section \ref{solution-ontology-prototype}, where a prototype of an ontology is discussed. The subsequent section \ref{solution-architectural-prototype} is proposing an architectural prototype of a system for integrating and publishing \gls{ld} consistent with the \gls{ld} principles \cite{berners-lee_linked_2009}. The final section \ref{solution-map-application} is presenting a map application to show the potential of the generated spatial \gls{lod}.
 
 \section{Data acquisition}
 \label{solution-data-acquisition}
-Spatial data about the \gls{tuv} is distributed over multiple sources with different formats and data owners. In order to be eventually transformed into \gls{ld}, this data must be extracted and prepared for the integration. Figure \ref{fig:solution-data-acquisition:sources} visualizes the different data sources.
+Spatial data about the \gls{tuv} is distributed over multiple sources with different formats and data owners. In order to be eventually transformed into \gls{ld}, this data must be extracted and prepared for the transformation. Figure \ref{fig:solution-data-acquisition:sources} visualizes the different data sources.
 
 The major source for building information is the web site of the facility management unit of the \gls{tuv} (GUT\footnote{\url{http://www.gut.tuwien.ac.at/}}). This site lists all buildings and an enumeration of their floors in form of a (X)HTML table. It also contains links to the floor plans that are provided as \gls{pdf} files as well as to a \gls{pdf} file for each building consisting of a table of all contained rooms with their intended function (e.g. office room, sanitary room). Section \ref{solution-data-acquisition-tables} deals with the problem of extracting and transforming tables from \gls{pdf}s and web pages. The approach for processing floor plans is discussed in section \ref{solution-data-acquisition-floor-plans}.
 
 
-The central information system TISS\footnote{\url{https://tiss.tuwien.ac.at/}} provides a RESTful API that gives access to organizational information and the public address book. For this thesis, this API is useful for linking persons and organizations to their offices. TISS has also a web page dedicated to presenting the event schedule of certain rooms like lecture halls, but this data is not available over the mentioned RESTful API; only in a human-readable form. 
+The central information system TISS\footnote{\url{https://tiss.tuwien.ac.at/}} provides a RESTful API that gives access to organizational information and the public address book. For this thesis, this API is useful for linking persons and organizations to their offices. TISS has also a web page dedicated to presenting the event schedule of certain rooms like lecture halls, but this data is not available over the mentioned RESTful API; only in a human-readable form.
 
 
 \begin{figure}[h]
@@ -386,7 +391,7 @@ The central information system TISS\footnote{\url{https://tiss.tuwien.ac.at/}} p
 
 \subsection{(X)HTML and \gls{pdf} tables}
 \label{solution-data-acquisition-tables}
-As mentioned earlier, some of the data is presented to users only in form of (X)HTML tables and must therefore be extracted in order to be transformed into \gls{ld}. Web scrapers/Web harvester are an useful tool to extract such tables from web pages manually or by using XPATH expressions and to store them in an intermediate representation. For this thesis a chrome extension named 'Web Scraper' \footnote{\url{http://webscraper.io/}} was used. This intermediate representation was then exported into a \gls{csv} file.
+As mentioned earlier, some of the data is presented to users only in form of (X)HTML tables and must therefore be extracted in order to be transformed into \gls{ld}. Web scrapers/Web harvester are an useful tool to extract such tables from web pages manually or by using XPATH expressions and to store them in an intermediate representation. For this thesis a chrome extension named 'Web Scraper' \footnote{\url{http://webscraper.io/}} was used. This intermediate representation was then exported into a \gls{csv} file. 
 
 For tables in \gls{pdf} files a different approach is required and the tool named 'Tabula'\footnote{\url{http://tabula.technology/}} is qualified for this kind of problem. It can detect tables automatically and transforms them into an intermediate representation, but this does not always work appropriately. In this case, the user can support the program by selecting the relevant parts manually. This intermediate representation was then also exported into a \gls{csv} file.
 
@@ -414,33 +419,181 @@ Due to the lack of alternatives, the approach used for this thesis was to manual
     \label{fig:solution-data-acquisition:tuvienna-lib-gm-indoor}
 \end{figure}
 
-\subsection{XML}
+\subsection{\gls{xml}}
 \label{solution-data-acquisition-tables}
+
+The RESTful API of TISS provides results of methods in a (semi-)structured format like \gls{xml} and \gls{json}, which is why no further preparations for the transformation are needed. 
 
 \todo{Describe ... }
 
 \section{Prototype of ontology}
 \label{solution-ontology-prototype}
-\todo{Description of the developed ontology with newly created terms and reused ones, and why using GeoSPARQL and what are the disadvantages}
+In this section two ontologies will be proposed that are intended to cover the specific domain of spatial university data. Section \ref{solution-ontology-prototype:spatial} presents an ontology for describing the campus from buildings to indoor environments, whereas section \ref{solution-ontology-prototype:navigation} proposes an ontology for modelling indoor navigation. The design process took best practises for publishing ontologies\cite{berrueta_best_2008} into consideration. In order to enhance the interchangeability of the described data it is commonly understood to reuse terms of common ontologies, which is why chapter \ref{related-work-chapter} outlined common geospatial ontologies as well as ontologies and approaches for modelling indoor environments. The conclusion of the evaluation was to use the GeoSPARQL ontology for describing the geometry of indoor features and buildings. Hence, the system architecture has to consider an additional prerequisite; the used triple store should support the GeoSPARQL extensions and for the purpose of better scalability also spatial indexing.
+
+\subsection{Spatial ontology}
+\label{solution-ontology-prototype:spatial}
+
+\todo{describe ... }
+
+\subsection{Navigation ontology}
+\label{solution-ontology-prototype:navigation}
+The spatial ontology (see section \ref{solution-ontology-prototype:spatial}) provides the necessary expressiveness to describe the indoor environment of buildings from rooms, corridors to entrances, but no assertions can be made about how this \textit{features} are actually connected. Some conclusion can be drawn by looking at the \textit{geometries} of \textit{features}. In order to get for example the two rooms a door is connecting, the distance to the \textit{geometry} of all rooms must be computed and the two rooms with the lowest distance by considering a reasonable threshold (in case one or both rooms are unknown) could be selected. Furthermore, would it be possible to compute the path to a room by considering the \textit{geometries}, but this would still need information about how certain \textit{features} are connected. A door for example could require an access control measure to pass it in one direction, but in the other direction it could be passed without constraints. A further problem to consider, if the path should be computed based on the \textit{geometries}, is that not all paths may be accessible for all persons. A space could contain steps that are hard to overcome for persons with mobility impairments, or the space could be occupied by other obstacles.  As an example, directly in front of or behind a door could be some steps that would force such persons to use another entrance.
+
+For this thesis the approach of pre-defining routes based on \textit{features} and points of interest was chosen for the purpose of simplification. However, the previous mentioned techniques could be used to compute certain parts of the route and humans can take over, when it became more complex. Another important question to address is the granularity. Should a route consists of a collection of connected rooms, horizontal passageways like corridors and vertical passageways like elevators or be more detailed with different paths inside of rooms and corridors. The problem of the first approach is that there could be some obstacles inside of rooms and corridors (e.g. steps in the middle of the corridor) that would be overseen. In case of the more detailed routes consisting of a collection of points of interest such obstacles can be taken into consideration, but it is consequently costlier than the first approach.
+
+Figure \ref{fig:solution-ontology-prototype:navigation} shows the designed ontology for the indoor navigation. It has two major classes named \texttt{NavigationEntity} and \texttt{Constraint}. The class \texttt{NavigationEntity} has two subclasses namely \texttt{Route} and \texttt{Access}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{graphics/solution/ontology/tuViennaNavigationOntology.png}
+    \caption{Visualization of the navigation ontology}
+    \label{fig:solution-ontology-prototype:navigation}
+\end{figure}
+
+\paragraph{Route} is a path R(x,y) between two spatial \textit{features} x and y, whereby x and y are instances of the class \texttt{Feature} of GeoSPARQL. The path is walk-able from x to y by considering the given constraints of this route. No assumptions about the other direction R(y,x) are made. The x and y values of a route are assigned to it by the properties \texttt{xOfRoute} (inverse property \texttt{xFeature}) and \texttt{yOfRoute} (inverse property \texttt{yFeature}). A door that requires an access control measurement in one direction and not in the other is one example of a \texttt{Route}.
+
+\subparagraph{BiRoute} is a subclass of \texttt{Route} and represents a path R(x,y) between two spatial \textit{features}, whereas the path between x and y is walk-able in both directions considering the given constraints. The values x and y can be assigned to an instance of \texttt{BiRoute} by using the property \texttt{xyOfRoute} (inverse property \texttt{xyFeature}). This property is a subproperty of \texttt{xOfRoute} and \texttt{yOfRoute}; means that each value of \texttt{xyOfRoute} is automatically x and y of a \texttt{Route}. Consequently also R(x,x) and R(y,y) are valid paths, which must be filtered. A simple path inside of a corridor is an example for a \texttt{BiRoute}.
+
+It would be nice to query for the path between two spatial \textit{features} in pure \gls{sparql}. The most recent version of the language (v1.1) introduced a new feature called property paths. These property paths can be used to recursively follow property links\cite{harris_sparql_2013}. However, property paths lack expressivness and queries that count the number of possible paths between two nodes or compute the shortes path are not expressible with \gls{sparql} v1.1 \cite{reutter_recursion_2015}\cite{atzori_computing_2014}. Nonetheless, a \gls{sparql} query could prepare the input for a path finding algorithm. 
+
+\begin{lstlisting}[language=sparql, frame=single, basicstyle=\footnotesize, caption=Prepare for path finding, label={lst:solution-ontology-prototype:navigation:prepare}]
+SELECT ?xRouteFeature ?route ?yRouteFeature ?length WHERE
+{
+    values (?startFeature ?endFeature) {
+    	(<http://finder.tuwien.ac.at/spatial/accessunit/id/HEEGM1> 
+    	<http://finder.tuwien.ac.at/spatial/elevator/id/HFEG02C>)
+    }
+    # Fetch the features of possible paths
+    ?startFeature (navi:xOfRoute/navi:yFeature)+ ?routeFeature .
+    ?xRouteFeature navi:xOfRoute ?route ;
+    	gsp:hasGeometry [ gsp:asWKT ?xRouteFeatureGeom ] .
+    ?route navi:yFeature ?yRouteFeature .
+    ?yRouteFeature (navi:xOfRoute/navi:yFeature)* ?endFeature ;
+      	gsp:hasGeometry [ gsp:asWKT ?yRouteFeatureGeom ] .
+    FILTER(?xRouteFeature != ?yRouteFeature).
+    # Computes the length of the path in meters.
+    BIND(gspf:distance(?xRouteFeatureGeom, ?yRouteFeatureGeom, uom:metre)
+    	as ?length) .
+    # Remove all routes that have certain constraints.
+    FILTER NOT EXISTS {
+    	?route navi:hasConstraint ex:building-id-H-opening-hours .
+    }
+}
+\end{lstlisting}
+
+Listing \ref{lst:solution-ontology-prototype:navigation:prepare} shows a query returning a result set of all \textit{features} (xRouteFeature) that are part of a possible path between two given \textit{features} (startFeature, endFeature) and all the adjacent, noteworthy \textit{features} (yRouteFeature) for each of them. An adjacent \textit{feature} (yRouteFeature) is noteworthy, if there is a possible path to the target \textit{feature} (endFeature) and the route R(xRouteFeature, yRouteFeature) has no undesirable constraints. Additionally, the length will be determined for each route in order to have a weight for the path finding algorithm. The length is simply the distance between the x- and y-\textit{feature} of a route.
+
+\subparagraph{Access} ...
+
+\todo{finish ... }
 
 \section{Architectural prototype}
 \label{solution-architectural-prototype}
-\todo{A description of the system, the different layers, integration, linking and web framework, REST API, used technologies}
 
-\subsection{System architecture}
-\todo{Description of the system architecture}
+This section proposes a architectural prototype of an system that manages \gls{lod} from integration to publication. Figure \ref{fig:solution-architectural-prototype} shows an overview of this architecture, which is separated into three layers; the data management, service and presentation layer. The shown data sources (described in section \ref{solution-data-acquisition}) build the knowledge base of the system. Section\ref{solution-architectural-prototype:ld-management} discusses the data management layer, which deals with the integration of those data sources and the maintenance of it. The linking of the local spatial \gls{ld} with external sources like LinkedGeoData and GeoNames is described in section \ref{solution-architectural-prototype:linking}. After the local spatial data has been integrated into the system, the resulting \gls{ld} can be published. Section \ref{solution-architectural-prototype:ld-publishing} discusses different approaches for the publication with the goal to make the underlying \gls{ld} easily accessible by machine and human agents. The prototype of a map application that make use of the provided services of the system is presented in the subsequent section \ref{solution-map-application}.   
+
+In order to implement the suggested prototype the programming language Java was used and section \ref{solution-architectural-prototype:rdf-framework} outlines the common frameworks for handling \gls{ld} in this language. It also describes the reasoning, why RDF4J\footnote{\url{http://rdf4j.org/}} was chosen.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{graphics/finderArchitecture.png}
+    \caption{Overview of the system architecture}
+    \label{fig:solution-architectural-prototype}
+\end{figure}
 
 \subsection{RDF Framework}
-\todo{Reasoning why using Sesame, not Apache Jena}
+\label{solution-architectural-prototype:rdf-framework}
+Handling \gls{rdf} data (as representation of \gls{ld}) is an essential part of the proposed software system and a reliable framework for fulfilling this task is needed. Besides reliability the framework should also support most of the following requirements:
+
+\begin{enumerate}
+	\item it should be freely available, favourably Open Source.
+	\item it should be possible to store data into either a embedded or external triple store.
+	\item it should support \gls{sparql} to query data.
+	\item it should support common serialization formats like RDF/XML, Turtle, LD-JSON and N-Triples.
+	\item it should support spatial functionalities in \gls{sparql} queries compliant to GeoSPARQL (see section \ref{related-work-geospatial-ontologies}). At least the minimal distance between two geometries must be computable.
+	\item it should be possible to reason over stored \gls{ld} given a list of ontologies. 
+\end{enumerate}
+
+There are currently two common frameworks for handling \gls{rdf} data in the Java environment namely Apache Jena\footnote{\url{https://jena.apache.org/}} and Sesame, which has recently been migrated to the project RDF4J\footnote{\url{http://rdf4j.org/}}. Both are Open Source, but none fulfils all of the mentioned requirements, why it is also necessary to take plug-ins and external triple stores into consideration.
+
+\paragraph{Apache Jena} is a framework that can be used to store, manipulate and query \gls{ld}. It`s architecture consists basically of three layers, the store API at the bottom, the inference API in the middle, the RDF API and  SPARQL API respectively as interface to the application code \cite{the_apache_software_foundation_jena_????}. In contrary to RDF4J, \gls{rdf} data can be parsed into a model instance and thenceforward this model can be used to query and reason over it. RDF4J requires this \gls{rdf} data to be at least stored into a repository embedded in memory in order be queried using \gls{sparql}. One advantage of Jena over RDF4J is also the built-in reasoner that supports simple \gls{rdfs} reasoning as well as multiple profiles of \gls{owl} \cite{the_apache_software_foundation_jena_????-1}. Jena supports different types of storage from native triple store to a memory based one; also custom triple stores can be used, but in this case an adopter is required. In case of spatial functionalities Jena does support spatial relationships like near by, within box, intersect box or north/south/west/east of \cite{the_apache_software_foundation_spatial_????}, but it is not compliant to the GeoSPARQL standard . Functions like computing the minimal distance between two geometries are not covered. There is also no support for \gls{gml} serializations of geometries. As a consequence requirement \textbf{\textit{5}} is not fulfilled. A way to circumvent this problem is to use an external triple store that provides these spatial functionalities, but as mentioned above this triple store must offer an adaptor for Jena, which limits the number of considerable triple stores.
+ 
+\paragraph{RDF4J} is as well a framework to store, manipulate and query \gls{ld}, but there are conceptual differences. As mentioned above in RDF4J actions are carried out against repositories and a model has less functionality than in Jena; it is simply a collection of statements (triples). RDF4J provides \gls{rdfs} reasoning, but nothing more expressive than that. However, custom reasoners can be added like in Apache Jena too. An advantage of RDF4J over Jena is the simplicity of adding other storages beside the built-in ones (also native triple stores to in-memory repositories). It provides for example classes to use a \gls{sparql} endpoint as repository. In fact there are multiple external triple stores that can be used with RDF4J over HTTP like GraphDB\footnote{\url{http://ontotext.com/products/graphdb/}}, Stardog\footnote{\url{http://docs.stardog.com/}} or Blazegraph\footnote{https://www.blazegraph.com/product/}. RDF4J does have a package named \texttt{rdf4j-queryalgebra-geosparql} to add spatial functionalities compliant with GeoSPARQL, but during testing the minimal distance function always returned null. It was not clear, if there was a bug in the framework or it was used incorrectly. This leads to a major drawback of RDF4J in contrast to Jena, it has a sparsely documentation at the moment of writing.
+
+\subsubsection{Conclusion}
+
+The support of spatial functionalities in \gls{sparql} queries like computing the minimal distance between two geometries is crucial for the proposed software system, not only for the navigation task, but also for spatial linking of resources with external sources (see section \ref{solution-architectural-prototype:linking}). In this regard both frameworks would be insufficient, but custom/external triple stores can help here. GraphDB is a triple store that is able to take care of reasoning (with support of \gls{rdfs} as well as a list of profiles of \gls{owl}). Additionally, it offers a GeoSPARQL plug-in that not only adds the corresponding spatial functionalities, but also spatial indexing resulting in a performance gain. This is the reason why RDF4J was chosen as framework, because it is easier to use such an external triple store.
 
 \subsection{Linked Data management}
+\label{solution-architectural-prototype:ld-management}
 \todo{Description of the data management and compliance to best practise}
 
+\subsubsection{\gls{iri} design}
+\label{solution-architectural-prototype:ld-management:iri-design}
+
+
 \subsection{Linking}
+\label{solution-architectural-prototype:linking}
 \todo{Description of strategies for linking with external sources and to enrich the data}
 
+(see figures \ref{fig:solution-architectural-prototype:ld-management:linking:gnNearBy} and \ref{fig:solution-architectural-prototype:ld-management:linking:lgdNearBy})
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{graphics/linking/geonamesFeatureNearByLinking.png}
+    \caption{GeoNames features that are nearby (max. 100m)}
+    \label{fig:solution-architectural-prototype:ld-management:linking:gnNearBy}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{graphics/linking/linkedgeodataAmenityNearBy.png}
+    \caption{LinkedGeoData features that are nearby (max. 100m)}
+    \label{fig:solution-architectural-prototype:ld-management:linking:lgdNearBy}
+\end{figure}
+
 \subsection{Linked Data publishing}
+\label{solution-architectural-prototype:ld-publishing}
 \todo{Description of the data publishing and compliance to best practise}
+
+\subsubsection{RESTful API}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{graphics/buildingApiTree.png}
+    \caption{URI design for the services concerning buildings}
+    \label{fig:solution-architectural-prototype:restful-api}
+\end{figure}
+
+\subsubsection{Content negotiation}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{graphics/solution/uri-strategy/uriStrategyMachineReadable.png}
+    \caption{Requesting machine-readable representation of a given resource.}
+    \label{fig:solution-architectural-prototype:ld-publishing:machine-readable}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{graphics/solution/uri-strategy/uriStrategyHumanReadable.png}
+    \caption{Requesting human-readable representation of a given resource.}
+    \label{fig:solution-architectural-prototype:ld-publishing:human-readable}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{graphics/solution/uri-strategy/uriStrategyErrorHandling.png}
+    \caption{Requesting an unknown resource.}
+    \label{fig:solution-architectural-prototype:ld-publishing:human-readable}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{graphics/solution/uri-strategy/uriStrategyForceMachineReadable.png}
+    \caption{Forcing the return of a specific machine-readable representation.}
+    \label{fig:solution-architectural-prototype:ld-publishing:force-machine-readable}
+\end{figure}
 
 \section{Map application}
 \label{solution-map-application}
