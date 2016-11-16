@@ -56,7 +56,7 @@
 \setadvisor{Ao.Univ.Prof. Dipl.-Ing. Dr.techn. Mag.rer.soc.oec}{Stefan Biffl}{Univ.Doz.}{male}
 
 % For bachelor and master theses:
-\setfirstassistant{...}{Reka Marta Sabou}{Project Ass.}{female}
+\setfirstassistant{MSc PhD}{Reka Marta Sabou}{Project Ass.}{female}
 
 % For dissertations:
 %\setfirstreviewer{Pretitle}{Forename Surname}{Posttitle}{male}
@@ -128,6 +128,8 @@
 \newacronym{pdf}{PDF}{Portable Document Format}
 \newacronym{wkt}{WKT}{Well-known text}
 \newacronym{gml}{GML}{Geography Markup Language}
+\newacronym{http}{HTTP}{Hypertext Transfer Protocol}
+
 
 %Define SPARQL listing
 \lstdefinelanguage{sparql}{
@@ -490,7 +492,7 @@ Listing \ref{lst:solution-ontology-prototype:navigation:prepare} shows a query r
 \section{Architectural prototype}
 \label{solution-architectural-prototype}
 
-This section proposes a architectural prototype of an system that manages \gls{lod} from integration to publication. Figure \ref{fig:solution-architectural-prototype} shows an overview of this architecture, which is separated into three layers; the data management, service and presentation layer. The shown data sources (described in section \ref{solution-data-acquisition}) build the knowledge base of the system. Section\ref{solution-architectural-prototype:ld-management} discusses the data management layer, which deals with the integration of those data sources and the maintenance of it. The linking of the local spatial \gls{ld} with external sources like LinkedGeoData and GeoNames is described in section \ref{solution-architectural-prototype:linking}. After the local spatial data has been integrated into the system, the resulting \gls{ld} can be published. Section \ref{solution-architectural-prototype:ld-publishing} discusses different approaches for the publication with the goal to make the underlying \gls{ld} easily accessible by machine and human agents. The prototype of a map application that make use of the provided services of the system is presented in the subsequent section \ref{solution-map-application}.   
+This section proposes a architectural prototype of a software system that manages \gls{lod} from integration to publication. Figure \ref{fig:solution-architectural-prototype} shows an overview of this architecture, which is separated into three layers; the data management, service and presentation layer. The shown data sources (described in section \ref{solution-data-acquisition}) build the knowledge base of the system. Section\ref{solution-architectural-prototype:ld-management} discusses the data management layer, which deals with the integration of those data sources and the maintenance of it. The linking of the local spatial \gls{ld} with external sources like LinkedGeoData and GeoNames is described in section \ref{solution-architectural-prototype:linking}. After the local spatial data has been integrated into the system, the resulting \gls{ld} can be published. Section \ref{solution-architectural-prototype:ld-publishing} discusses different approaches for the publication with the goal to make the underlying \gls{ld} easily accessible by machine and human agents. The prototype of a map application that make use of the provided services of the system is presented in the subsequent section \ref{solution-map-application}.   
 
 In order to implement the suggested prototype the programming language Java was used and section \ref{solution-architectural-prototype:rdf-framework} outlines the common frameworks for handling \gls{ld} in this language. It also describes the reasoning, why RDF4J\footnote{\url{http://rdf4j.org/}} was chosen.
 
@@ -507,7 +509,7 @@ Handling \gls{rdf} data (as representation of \gls{ld}) is an essential part of 
 
 \begin{enumerate}
 	\item it should be freely available, favourably Open Source.
-	\item it should be possible to store data into either a embedded or external triple store.
+	\item it should be possible to store data into either an embedded or external triple store.
 	\item it should support \gls{sparql} to query data.
 	\item it should support common serialization formats like RDF/XML, Turtle, LD-JSON and N-Triples.
 	\item it should support spatial functionalities in \gls{sparql} queries compliant to GeoSPARQL (see section \ref{related-work-geospatial-ontologies}). At least the minimal distance between two geometries must be computable.
@@ -518,18 +520,61 @@ There are currently two common frameworks for handling \gls{rdf} data in the Jav
 
 \paragraph{Apache Jena} is a framework that can be used to store, manipulate and query \gls{ld}. It`s architecture consists basically of three layers, the store API at the bottom, the inference API in the middle, the RDF API and  SPARQL API respectively as interface to the application code \cite{the_apache_software_foundation_jena_????}. In contrary to RDF4J, \gls{rdf} data can be parsed into a model instance and thenceforward this model can be used to query and reason over it. RDF4J requires this \gls{rdf} data to be at least stored into a repository embedded in memory in order be queried using \gls{sparql}. One advantage of Jena over RDF4J is also the built-in reasoner that supports simple \gls{rdfs} reasoning as well as multiple profiles of \gls{owl} \cite{the_apache_software_foundation_jena_????-1}. Jena supports different types of storage from native triple store to a memory based one; also custom triple stores can be used, but in this case an adopter is required. In case of spatial functionalities Jena does support spatial relationships like near by, within box, intersect box or north/south/west/east of \cite{the_apache_software_foundation_spatial_????}, but it is not compliant to the GeoSPARQL standard . Functions like computing the minimal distance between two geometries are not covered. There is also no support for \gls{gml} serializations of geometries. As a consequence requirement \textbf{\textit{5}} is not fulfilled. A way to circumvent this problem is to use an external triple store that provides these spatial functionalities, but as mentioned above this triple store must offer an adaptor for Jena, which limits the number of considerable triple stores.
  
-\paragraph{RDF4J} is as well a framework to store, manipulate and query \gls{ld}, but there are conceptual differences. As mentioned above in RDF4J actions are carried out against repositories and a model has less functionality than in Jena; it is simply a collection of statements (triples). RDF4J provides \gls{rdfs} reasoning, but nothing more expressive than that. However, custom reasoners can be added like in Apache Jena too. An advantage of RDF4J over Jena is the simplicity of adding other storages beside the built-in ones (also native triple stores to in-memory repositories). It provides for example classes to use a \gls{sparql} endpoint as repository. In fact there are multiple external triple stores that can be used with RDF4J over HTTP like GraphDB\footnote{\url{http://ontotext.com/products/graphdb/}}, Stardog\footnote{\url{http://docs.stardog.com/}} or Blazegraph\footnote{https://www.blazegraph.com/product/}. RDF4J does have a package named \texttt{rdf4j-queryalgebra-geosparql} to add spatial functionalities compliant with GeoSPARQL, but during testing the minimal distance function always returned null. It was not clear, if there was a bug in the framework or it was used incorrectly. This leads to a major drawback of RDF4J in contrast to Jena, it has a sparsely documentation at the moment of writing.
+\paragraph{RDF4J} is as well a framework to store, manipulate and query \gls{ld}, but there are conceptual differences. As mentioned above in RDF4J actions are carried out against repositories and a model has less functionality than in Jena; it is simply a collection of statements (triples). RDF4J provides \gls{rdfs} reasoning, but nothing more expressive than that. However, custom reasoners can be added like in Apache Jena too. An advantage of RDF4J over Jena is the simplicity of adding other storages besides the built-in ones (from native triple stores to in-memory repositories). It provides for example classes to use a \gls{sparql} endpoint as repository. In fact there are multiple external triple stores that can be used with RDF4J over HTTP like GraphDB\footnote{\url{http://ontotext.com/products/graphdb/}}, Stardog\footnote{\url{http://docs.stardog.com/}} or Blazegraph\footnote{\url{https://www.blazegraph.com/product/}}. RDF4J does have a package named \texttt{rdf4j-queryalgebra-geosparql} to add spatial functionalities compliant with GeoSPARQL, but during testing the minimal distance function always returned null. It was not clear, if there was a bug in the framework or it was used incorrectly. This leads to a major drawback of RDF4J in contrast to Jena, it has a sparse documentation at the moment of writing.
 
 \subsubsection{Conclusion}
 
-The support of spatial functionalities in \gls{sparql} queries like computing the minimal distance between two geometries is crucial for the proposed software system, not only for the navigation task, but also for spatial linking of resources with external sources (see section \ref{solution-architectural-prototype:linking}). In this regard both frameworks would be insufficient, but custom/external triple stores can help here. GraphDB is a triple store that is able to take care of reasoning (with support of \gls{rdfs} as well as profiles of \gls{owl}). Additionally, it offers a GeoSPARQL plug-in that not only adds the corresponding spatial functionalities, but also spatial indexing resulting in a performance gain. This is the reason why RDF4J was chosen as framework, because it is easier to use such an external triple store.
+The support of spatial functionalities in \gls{sparql} queries like computing the minimal distance between two geometries is crucial for the proposed software system, not only for the navigation task, but also for spatial linking of resources with external sources (see section \ref{solution-architectural-prototype:linking}). In this regard both frameworks would be insufficient, but custom/external triple stores can help here. GraphDB is a triple store that is able to take care of reasoning (with support of \gls{rdfs} as well as profiles of \gls{owl}). Additionally, it offers a GeoSPARQL plug-in that not only adds the corresponding spatial functionalities, but also spatial indexing resulting in a performance gain. This is the reason why RDF4J was chosen as framework, because it is easier to use such an external triple store, which then can also mitigate some of the drawbacks of RDF4J.
 
-\subsection{Linked Data management}
+\subsection{\gls{ld} Management}
 \label{solution-architectural-prototype:ld-management}
-\todo{Description of the data management and compliance to best practise}
+At the bottom of the proposed, layered software system is the data management layer, which is responsible for integrating and maintaining \gls{ld}. The first step is called mediation and it deals with the problem of integrating data from different data sources and updating them in a frequency that fits the characteristics of the dataset. The triple store manager controls the access to the used triple store. For this thesis, GraphDB was chosen as explained in the previous section \ref{solution-architectural-prototype:rdf-framework}, but the idea of the triple store manager is to hide this fact; also other storage solution that are compatible with RDF4J and fulfil the mentioned requirements can be used. All these aspects are explained in the following in more detail, starting with the designed naming scheme for resources.
 
-\subsubsection{\gls{iri} design}
-\label{solution-architectural-prototype:ld-management:iri-design}
+
+\subsubsection{Naming scheme}
+In order to handle a larger amount of \gls{ld} a consistent naming scheme for resources is inevitable. This also helps to simplify the design of a RESTful API (see section \ref{solution-architectural-prototype:ld-publishing}). As suggested by the first two principles of \gls{ld} brought forward by Tim-Berners-Lee \cite{berners-lee_linked_2009}, unique \gls{iri}s should be used to name resources and be based on \gls{http} so that people can look up those resources. A driving factor for exposing data as \gls{ld} is the idea of lowering bars for innovative, motivated developers for coming up with useful applications using the exposed resources. Furthermore other datasets may link to those resources, which is why it must be considered that the designed \gls{iri}s are as stable and persistent as possible. However, this issue goes beyond the designed software system and has to include administrators of the infrastructure, where the system is going to be deployed. For this thesis the base \gls{iri} was chosen in advance to be \texttt{http://finder.tuwien.ac.at/}, but it is not hard-coded and can be changed before deployment.
+
+The data that will be integrated into the system is predominately spatial data, but also organizational data and information about events are of interest for certain services. Information about events for instance can be used to determine which lecture room is available at a given time. All of this different types of data will be stored into different named graphs. Table \ref{tab:architectural-prototype:named-graphs} shows the chosen naming scheme for the named graphs. The \texttt{catalog} graph contains metadata about the different named graphs as suggested by best practises for data on the Web\cite{w3c_data_2016}. This metadata includes general information (like title, keywords, publisher, frequency of changes), license information, quality details and available forms of distribution. The data catalog vocabulary\cite{maali_data_2014} was used to provide this information.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lp{7cm}}
+    \toprule
+    Name of graph & Description \\
+    \midrule
+    \texttt{<base>/spatial} & Dataset containing statements about resources of the spatial domain. \\
+    \texttt{<base>/organizational} & Dataset containing statements about resources concerned with organizational information like persons, institutes and faculties. \\
+    \texttt{<base>/event} & Dataset containing statements about resources concerned with events like lectures.\\
+    \texttt{<base>/catalog} & Dataset containing statements describing the mentioned datasets (named graphs) like f.e. last update or frequency of changes. This dataset can be used as starting point to explore the datasets mentioned above and to inform yourself about available distributions.\\
+    \bottomrule
+  \end{tabular}
+  \caption{Named graphs used in the proposed software system}
+  \label{tab:architectural-prototype:named-graphs}
+\end{table}
+
+The suggested naming scheme of resources is then considering which named graph the resource belongs to. Table \ref{tab:architectural-prototype:resource-naming-scheme} shows the scheme for spatial resources. The \gls{iri}s are intended to be self-descriptive and it is assumed that each resource has an unique identifier. In case of rooms, buildings and floors it is easy, because the \gls{tuv} has already  specified an unique identifier for those spatial entities and this is also reflected in the gathered data. Assigning an identifier to resources like addresses is more complicated, due to the lack of a predefined global identifier; this leads to the question how addresses that are considered to be equal, but gathered from different data sources, should be identified? One one hand a string consisting of a part that identifies the data source uniquely and a second part that identifies the resource inside of this data source uniquely can be used, whereby internal linking must be computed afterwards. The transformation process becomes easier with this approach, but consequently \texttt{owl:sameAs} statements will be produced during the linking, which could have an impact on the querying performance. The approach used for address resources in this thesis was a combination of concatenating key properties and hashing. This makes the transformation process more complicated, but prevents unnecessary \texttt{owl:sameAs} statements. The address identifier consists of the country code, the postal code, a MD5 hash of the street name and eventually the locator. The address  '\textit{Favoritenstraße 9-11, 1040 Vienna, Austria}' for example has the identifier \texttt{AT1040-3ebd6229134d2d9c36a91657af166825-9-11}.
+
+\begin{table}
+  \centering
+  \begin{tabular}{lp{6cm}}
+    \toprule
+    Naming of spatial resource & Description \\
+    \midrule
+    \texttt{<base>/spatial/building/id/<id>} & Describes building with the given id.\\
+    \texttt{<base>/spatial/building/id/<id>/address} & Describes the default address of the building with the given id.\\    
+    \texttt{<base>/spatial/floor/id/<id>} & Describes floor with the given id.\\
+    \texttt{<base>/spatial/room/id/<id>} & Describes room with the given id.\\
+        \texttt{<base>/spatial/room/id/<id>/address} & Describes the default address of the room with the given id.\\ 
+    ...\\
+    \bottomrule
+  \end{tabular}
+  \caption{Naming scheme for spatial resources}
+  \label{tab:architectural-prototype:resource-naming-scheme}
+\end{table}
+
+\subsubsection{Mediation}
+
+\paragraph{Data acquisition} is the first step of the mediation process. 
 
 
 \subsection{Linking}
