@@ -2,8 +2,7 @@
 
 \documentclass[draft,final]{vutinfth} % Remove option 'final' to obtain debug information.
 
-\usepackage{listings}
-% Load packages to allow in- and output of non-ASCII characters.
+\usepackage{listings}       % Load packages to allow in- and output of non-ASCII characters.
 \usepackage{lmodern}        % Use an extension of the original Computer Modern font to minimize the use of bitmapped letters.
 \usepackage[T1]{fontenc}    % Determines font encoding of the output. Font packages have to be included before this line.
 \usepackage[utf8]{inputenc} % Determines encoding of the input. All input files have to use UTF8 encoding.
@@ -25,18 +24,19 @@
 \usepackage{hyperref}  % Enables cross linking in the electronic document version. This package has to be included second to last.
 \usepackage[acronym,toc]{glossaries} % Enables the generation of glossaries and lists fo acronyms. This package has to be included last.
 
+
 % Define convenience functions to use the author name and the thesis title in the PDF document properties.
 \newcommand{\authorname}{Kevin Haller} % The author name without titles.
-\newcommand{\thesistitle}{Title} % The title of the thesis. The English version should be used, if it exists.
+\newcommand{\thesistitle}{Transferring Spatial University Data into Linked Open Data} % The title of the thesis. The English version should be used, if it exists.
 
 % Set PDF document properties
 \hypersetup{
-    pdfpagelayout   = TwoPageRight,           % How the document is shown in PDF viewers (optional).
-    linkbordercolor = {Melon},                % The color of the borders of boxes around crosslinks (optional).
-    pdfauthor       = {\authorname},          % The author's name in the document properties (optional).
-    pdftitle        = {\thesistitle},         % The document's title in the document properties (optional).
-    pdfsubject      = {Subject},              % The document's subject in the document properties (optional).
-    pdfkeywords     = {a, list, of, keywords} % The document's keywords in the document properties (optional).
+    pdfpagelayout   = TwoPageRight,
+    linkbordercolor = {Melon},
+    pdfauthor       = {\authorname},
+    pdftitle        = {\thesistitle},
+    pdfsubject      = {},
+    pdfkeywords     = {linked open data, spatial data, university data, indoor modelling}
 }
 
 \setsecnumdepth{subsection} % Enumerate subsections.
@@ -56,7 +56,7 @@
 \setadvisor{Ao.Univ.Prof. Dipl.-Ing. Dr.techn. Mag.rer.soc.oec}{Stefan Biffl}{Univ.Doz.}{male}
 
 % For bachelor and master theses:
-\setfirstassistant{MSc PhD}{Reka Marta Sabou}{Project Ass.}{female}
+\setfirstassistant{MSc. PhD.}{Reka Marta Sabou}{Project Ass.}{female}
 
 % For dissertations:
 %\setfirstreviewer{Pretitle}{Forename Surname}{Posttitle}{male}
@@ -66,11 +66,11 @@
 %\setsecondadvisor{Pretitle}{Forename Surname}{Posttitle}{male}
 
 % Required data.
-\setaddress{Address}
+\setaddress{Vellach 24, 9132 Gallizien, Österreich}
 \setregnumber{1325694}
-\setdate{01}{08}{2016} % Set date with 3 arguments: {day}{month}{year}.
-\settitle{\thesistitle}{Titel der Arbeit} % Sets English and German version of the title (both can be English or German).
-\setsubtitle{Optional Subtitle of the Thesis}{Optionaler Untertitel der Arbeit} % Sets English and German version of the subtitle (both can be English or German).
+\setdate{26}{12}{2016} % Set date with 3 arguments: {day}{month}{year}.
+\settitle{\thesistitle}{Transferring Spatial University Data into Linked Open Data} % Sets English and German version of the title (both can be English or German).
+\setsubtitle{From processing and publishing to consumption}{From processing and publishing to consumption} % Sets English and German version of the subtitle (both can be English or German).
 
 % Select the thesis type: bachelor / master / doctor / phd-school.
 % Bachelor:
@@ -89,10 +89,6 @@
 
 % For bachelor and master:
 \setcurriculum{Software and Information Engineering}{Software und Information Engineering} % Sets the English and German name of the curriculum.
-
-% For dissertations at the PhD School:
-\setfirstreviewerdata{Affiliation, Country}
-\setsecondreviewerdata{Affiliation, Country}
 
 % Define convenience macros.
 \newcommand{\todo}[1]{{\color{red}\textbf{TODO: {#1}}}} % Comment for the final version, to raise errors.
@@ -140,31 +136,65 @@ morekeywords={SELECT,CONSTRUCT,DESCRIBE,ASK,WHERE,FROM,NAMED,PREFIX,BASE,OPTIONA
 sensitive=true
 }
 
+%Define Turtle listing
+\lstdefinelanguage{turtle}{
+    columns=fullflexible,
+    keywordstyle=\color{red},
+    morekeywords={@prefix,@base,@forSome,@forAll,@keywords},
+    morecomment=[l][\color{OliveGreen}]{^\#},
+    tabsize=4,
+    alsoletter={-?},
+    morecomment=[s][\color{blue}]{<}{>},
+    basicstyle=\ttfamily\color{black},
+    morestring=[b][\color{OliveGreen}]\"
+}
+
+\lstset{literate=
+  {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+  {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+  {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+  {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+  {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+  {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+  {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+  {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+  {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+  {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1
+}
+
 \begin{document}
 
-\frontmatter % Switches to roman numbering.
-% The structure of the thesis has to conform to
-%  http://www.informatik.tuwien.ac.at/dekanat
+\frontmatter 
 
 \addtitlepage{naustrian} % German title page (not for dissertations at the PhD School).
 \addtitlepage{english} % English title page.
 \addstatementpage
 
-\begin{danksagung*}
-\todo{Ihr Text hier.}
-\end{danksagung*}
+\begin{abstract}
+Universities have to deal with a significant amount of data potentially managed by different information systems, due to the complexity of the domain of a university. It is likely for such an environment to result in independent systems, which encapsulate their managed information into disconnected data silos that may have different data owner and formats; potentially spread over different departments. As a result, the information managed by all those systems cannot be easily interlinked, which prevents universities of fully exploiting their data.
 
-\begin{acknowledgements*}
-\todo{Enter your text here.}
-\end{acknowledgements*}
+This thesis aims to show that there is a neglected potential in the data distributed over different data silos illustrated by the example of spatial data of the \gls{tuv}. In order to combine those data silos into a university-wide spatial data space, data of those silos will be transformed into \gls{ld} --- into a representation that is conform with ontologies for modelling university facilities and indoor navigation both proposed in this thesis.  \gls{ld} describes the idea of publishing data in a structured format, so that it is easier to interlink with other \gls{ld} and therefore become more useful.  
+
+In course of this thesis a software system will be proposed that tackles the issues from the integration of spatial \gls{ld} to its provision considering the best practise for publishing \gls{ld} \cite{hyland_best_2014} and spatial data on the Web\cite{tandy_spatial_2016}. But not all data is available in a machine-readable format and ready for integration,  which is why strategies for extracting information from tables embedded in (X)HTML or \gls{pdf} files as well as from floor plans are outlined. 
+
+Finally, a prototype of a map application that is based on the published \gls{ld} is presented to show the potential of the resulting \gls{lod}; following universities like University of Münster, University of Southampton and Oxford University, which expose \gls{lod} about their university facilities and offer a map application to locate points of interest. Going beyond similar applications developed at other universities, this map application also provides functionalities such as searching for free learning rooms that are nearby; a service based on \gls{ld} resulting from different data sources.
+
+\end{abstract}
+
 
 \begin{kurzfassung}
-\todo{Ihr Text hier.}
-\end{kurzfassung}
+Universitäten müssen eine signifikante Menge an Daten handhaben, die aufgrund der Komplexität, die die Domäne einer Universität bieten kann, potenziell von verschiedenen Informationssystemen verwaltet werden. In einer solchen Umgebung ist es nicht unwahrscheinlich, dass sich isolierte System entwickeln können, die ihre verwalteten Informationen in Datensilos kapseln, die verschiedene Eigentümer und Datenformate habe können; verteilt über mehrere administrative Bereiche wie Institute und Abteilungen. Aus dieser Umgebung resultiert die Situation, dass die in den Datensilos gekapselten Daten nicht einfach miteinander vernetzbar sind, was dazu führt, dass die Universität nicht das ganze Potenzial ihrer Daten ausnützen kann.
 
-\begin{abstract}
-\todo{Enter your text here.}
-\end{abstract}
+Ziel dieser Bachelorarbeit ist es das vernachlässigte Potenzial aufzuzeigen indem die Raum- und Gebäudedaten der Technischen Universität Wien als Beispiel genommen werden. Um diese auf mehrere Datensilos verteilten Daten miteinander zu vernetzen, werden eben diese in \gls{ld} transformiert --- in eine Repräsentation, die der Ontologie für Universitätseinrichtungen und Innenraum-Navigation entspricht, welche beide in dieser Arbeit vorgestellt werden. \gls{ld} beschreibt dabei einfach die Idee, dass Daten in einem strukturierten Format herausgegeben werden, so dass diese einfacher mit anderen \gls{ld} vernetzt werden kann, und somit an Nutzen gewinnt.
+
+Im Laufe dieser Arbeit wird ein Softwaresystem vorgestellt, das die Herausforderungen beginnend mit der Integration bis hin zur Bereitstellung von \gls{ld} diskutiert. Dabei werden die Best Practices für die Bereitstellung von \gls{ld} \cite{hyland_best_2014} sowohl als auch für das Veröffentlichen von räumlichen Daten im Web\cite{tandy_spatial_2016} berücksichtigt. Nicht jede Information ist in einem maschinen-lesbaren Format verfügbar und dadurch nicht ohne Vorarbeiten integrierbar, weshalb auch Strategien und Werkzeuge für die Extraktion von Information aus Tabellen, die auf Webseiten und in \gls{pdf} Dateien platziert sind, sowie aus Gebäudeplänen, die als Bilder vorhanden sind, aufgezeigt werden.
+
+Der entwickelte Prototyp einer Kartenapplikation für die Universität soll auf den integrierten Daten aufbauen, und das Potenzial aufzeigen, das in den bereitgestellten \gls{lod} liegt. Die Universität von Münster, Universität von Southampton und Oxford University sind Universitäten, die bereits ihre Raum- und Gebäudedaten als \gls{lod} bereitstellen und auch entsprechende Kartenapplikationen. Nichtsdestotrotz, hat der präsentierte Prototyp Funktionen wie das Finden von freien Lernräumen in der unmittelbaren Umgebung, die in den erwähnten Applikationen bis dato nicht implementiert sind. Dieser Service baut dabei exemplarisch auf \gls{ld}, die aus verschiedenen Datenquellen gesammelt und vernetzt worden sind, auf.
+
+\end{kurzfassung}
 
 % Select the language of the thesis, e.g., english or naustrian.
 \selectlanguage{english}
@@ -179,7 +209,7 @@ sensitive=true
 \label{introduction-chapter}
 
 \section{Motivation}
-Today`s universities usually have to manage a significant amount of information and have to provide systems to handle common services like finding and booking courses for students. As the current time demands it, those services are often provided over web sites participating in the Web of Documents (see figure \ref{fig:motiviation-web-of-documents}). The domain of a university is quite complex and as a consequence it is likely that different isolated information systems handling a particular part of the domain evolve; resulting in an environment, where information is distributed over multiple disconnected data silos that may have different formats and/or data owners. Such a situation prevents universities of fully exploiting their data \cite{zablith_consuming_2011}. 
+Today`s universities usually have to manage a significant amount of information and have to provide systems to handle common services like finding and booking courses for students. As the current time demands it, those services are often provided over web sites participating in the Web of Documents (see figure \ref{fig:motiviation-web-of-documents}). The domain of a university is quite complex and as a consequence it is likely that different isolated information systems handling a particular part of the domain evolve. This results in an environment, where information is distributed over multiple disconnected data silos that may have different formats and/or data owners. Such a situation prevents universities of fully exploiting their data \cite{zablith_consuming_2011}. 
 
 \begin{figure}[h]
     \centering    
@@ -188,7 +218,7 @@ Today`s universities usually have to manage a significant amount of information 
     \label{fig:motiviation-web-of-documents}
 \end{figure}
 
-The same applies at the moment to the \gls{tuv}. In order to find a special location like a certain lecture hall and how it can be accessed without obstacles like stairways for persons with mobility-impairments, one has to search for information on different web sites, scan floor plans and eventually construct a convenient route to the location based on the gathered knowledge. For humans this procedure does not constitute a problem, but think of machines. The process of information retrieval through data mining or harvesting is quite difficult and/or time consuming. As a consequence application developers that may have innovative ideas, which would be a benefit for the information environment of the university, face a barrier that is hard to overcome. \gls{ld} is one way to transform this information published on multiple web sites into a university-wide data space (see figure \ref{fig:motiviation-web-of-data}).
+The same applies at the moment to the \gls{tuv}. For example to find a special location like a certain lecture hall and how it can be accessed without obstacles like stairways for persons with mobility-impairments, one has to search for information on different web sites, scan floor plans and eventually construct a convenient route to the location based on the gathered knowledge. For humans this procedure does not constitute a problem, but think of machines. The process of information retrieval through data mining or harvesting is quite difficult and/or time consuming. As a consequence application developers that may have innovative ideas, which would be a benefit for the information environment of the university, face a barrier that is hard to overcome. \gls{ld} is one way to transform this information published on multiple web sites into a university-wide data space (see figure \ref{fig:motiviation-web-of-data}).
 
 \begin{figure}[h]
     \centering    
@@ -214,48 +244,50 @@ This thesis aims to show the potential that could evolve, if spatial data about 
 \section{Problem description}
 \label{intro-problem-description}
 
-As already mentioned does the \gls{tuv} distribute spatial information over different sources. Few of this spatial data is actually in a machine-readable format, so that it can be transformed into \gls{ld} automatically. The \textbf{\textit{1st problem}} to solve is therefore the transformation process of the unstructured part of the data into a machine-readable format. Section \ref{solution-data-acquisition} is suggesting a solution for this problem.
+As already mentioned \gls{tuv} distributes spatial information over different sources. Few of this spatial data is actually in a machine-readable format, so that it can be transformed into \gls{ld} automatically. The \textbf{\textit{1st problem}} to solve is therefore the transformation process of the unstructured part of the data into a machine-readable format. Section \ref{solution-data-acquisition} is suggesting a solution for this problem.
 
 The \textbf{\textit{2nd problem}} is how the structured spatial data shall be described so that it can be easily used by application developers as well as integrated into the Web of Data. The developed ontology shall be compliant to the best practises for publishing ontologies \cite{berrueta_best_2008}. Section \ref{solution-ontology-prototype} is suggesting a prototype of an ontology by taking already existing approaches (see section \ref{related-work-geospatial-ontologies} and \ref{related-work-indoor-modelling}) into consideration.
 
 After the spatial data was transformed into \gls{ld}, a system must be designed to expose this data on the Web in order to qualify as \gls{lod}, representing the \textbf{\textit{3rd problem}} to solve. The solution shall take best practises for publishing \gls{ld}\cite{hyland_best_2014} and best practises for spatial data on the Web\cite{tandy_spatial_2016} into consideration. Section \ref{solution-architectural-prototype} is proposing an architectural prototype of such a system.
 
-The \textbf{\textit{4th problem}} is the development of a map application that is based on the resulting \gls{lod}. The application shall answer the following question: \textit{"Give me all learning rooms that are nearby that are free in a given time range and are accessible without obstacles for person with mobility-impairments"} to show the potential of the data. Section \ref{solution-map-application} presents a solution to this problem.
+The \textbf{\textit{4th problem}} is the development of a map application that is based on the resulting \gls{lod}. The application shall answer the following question: \textit{"Give me all learning rooms that are nearby that are free in a given time range and are accessible without obstacles for persons with mobility-impairments"} to show the potential of the spatial data exposed as \gls{ld}. Section \ref{solution-map-application} presents a solution to this problem.
 
 \section{Structure of the thesis}
-This chapter outlined the motivation for writing this thesis and gave a description of the problems for which a solution will be suggested. The rest of this thesis is structured as follows: Chapter \ref{background-chapter} discusses the basic concepts, principles and technologies that build the foundation of \gls{ld} and the Semantic Web. It is intended to be a brief introduction for readers that are not familiar with this topic. Chapter \ref{related-work-chapter} provides a summary of past efforts in research and works related to the focus of this thesis. In the subsequent chapter \ref{solution-chapter} a solution for the given problems will be suggested and discussed. This includes the prototype of an ontology that models the problem domain as well as an architectural prototype of a system that manages a subset of spatial data about the \gls{tuv} in form of \gls{ld} and provides a human- and machine-friendly interface to it. Finally, the implemented solution is evaluated and conclusions are drawn in the last chapter \ref{discussion-chapter}. It provides furthermore an outlook to future work and potential improvements. 
+This chapter outlined the motivation for writing this thesis and gave a description of the problems for which a solution will be suggested. The rest of this thesis is structured as follows: Chapter \ref{related-work-chapter} provides a summary of past efforts in research and works related to the focus of this thesis. In the subsequent chapter \ref{solution-chapter} a solution for the given problems will be suggested and discussed. This includes the prototype of an ontology that models the problem domain as well as an architectural prototype of a system that manages a subset of spatial data about the \gls{tuv} in form of \gls{ld} and provides a human- and machine-friendly interface to it. Finally, the implemented solution is evaluated and conclusions are drawn in the last chapter \ref{discussion-chapter}. It provides furthermore an outlook to future work and potential improvements. 
 
-\chapter{Background}
-\label{background-chapter}
+%Chapter \ref{background-chapter} discusses the basic concepts, principles and technologies that build the foundation of \gls{ld} and the Semantic Web. It is intended to be a brief introduction for readers that are not familiar with this topic.
 
-\section{Web of Data}
-\todo{Enter your text here.}
+%\chapter{Background}
+%\label{background-chapter}
 
-\section{RDF}
-\gls{rdf}
-\todo{Enter your text here.}
+%\section{Web of Data}
+%\todo{Enter your text here.}
 
-\section{Ontology}
-\todo{Enter your text here.}
+%\section{RDF}
+%\gls{rdf}
+%\todo{Enter your text here.}
 
-\subsection{RDFS}
-\todo{Enter your text here.}
+%\section{Ontology}
+%\todo{Enter your text here.}
 
-\subsection{OWL}
-\todo{Enter your text here.}
+%\subsection{RDFS}
+%\todo{Enter your text here.}
 
-\section{SPARQL}
-\gls{sparql}
-\todo{Enter your text here.}
+%\subsection{OWL}
+%\todo{Enter your text here.}
+
+%\section{SPARQL}
+%\gls{sparql}
+%\todo{Enter your text here.}
 
 \chapter{Related Work}
 \label{related-work-chapter}
 
-In this chapter important efforts and research related to this thesis are outlined. Section \ref{related-work-geospatial-ontologies} describes and evaluates geospatial ontologies that were suggested by \cite{tandy_spatial_2016} or discovered in the dataset of \gls{lov} through a systematic search. Section \ref{related-work-map-app} lists already existing map applications that are based on \gls{lod} and describes their capabilities. The final section \ref{related-work-indoor-modelling} describes done research and designed ontologies for modelling indoor environments.
+In this chapter efforts and research related to this thesis are outlined. Section \ref{related-work-geospatial-ontologies} describes and evaluates geospatial ontologies that were suggested by \cite{tandy_spatial_2016} or discovered in the dataset of \gls{lov} through a systematic search. Section \ref{related-work-map-app} lists already existing map applications that are based on \gls{lod} and describes their capabilities. The final section \ref{related-work-indoor-modelling} describes research and designed ontologies for modelling indoor environments.
 
 \section{Geospatial ontologies}
 \label{related-work-geospatial-ontologies}
-This section is going to outline common ontologies for describing geospatial data and to evaluate them from the perspective of the given problem description (see \ref{intro-problem-description}).The ontologies were either be suggested by \cite{tandy_spatial_2016} or discovered in the dataset of \gls{lov} by common spatial search terms like \textit{'feature'}, \textit{'geometry'} or \textit{'location'}. \textit{Feature} and \textit{Geometry} are widely used terms in these ontologies and describe two different concepts of geospatial science. A \textit{feature}  is simply a spatial entity that can be everything from a building with fixed position to a movable food truck as long as it has a spatial extent. \textit{Geometry} as the name suggests is a certain geometric shape from points, lines to polygons. Geometric shapes can be used to describe  the spatial extent of \textit{features}.
+This section is going to outline common ontologies for describing geospatial data and to evaluate them from the perspective of the given problem description (see \ref{intro-problem-description}).The ontologies were either suggested by \cite{tandy_spatial_2016} or discovered in the dataset of \gls{lov} by common spatial search terms like \textit{'feature'}, \textit{'geometry'} or \textit{'location'}. \textit{Feature} and \textit{Geometry} are widely used terms in these ontologies and describe two different concepts of geospatial science. A \textit{feature}  is a spatial entity that can be everything from a building with fixed position to a movable food truck as long as it has a spatial extent. \textit{Geometry} as the name suggests is a certain geometric shape from points, lines to polygons. Geometric shapes can be used to describe  the spatial extent of \textit{features}.
 
 The ontologies are visualized using the VOWL2 notation\cite{lohmann_vowl_2014}. Classes are modelled as circles, properties in form of rectangles; data type properties have a green colour and object properties a blue one. Literals are presented in a yellow rectangle.
 
@@ -304,13 +336,13 @@ However, this ontology is not sufficient for describing spatial data more comple
 
 One advantage of this approach is that triple stores do not have to meet special requirements in order to enable the querying over geometric data like it is the case for GeoSPARQL. However, this shifts the burden of writing geometric queries to developers. A further problem is the high demand for resource identifiers or blank nodes (at least for each point of a shape), as the example of describing the geometry of Iceland shows\footnote{\url{http://nuts.geovocab.org/id/IS_geometry.ttl}}; this significantly increases the verbosity of the data without adding particular gains of expressitivity to it\cite{battle_geosparql:_2011}. \gls{ngeo} has also a generic property \texttt{asWKT} for pointing to the \gls{wkt} serialization of a geometry, which has at the moment of writing the status 'deprecated'.
 
-LinkedGeoData uses the \texttt{geometry} property of this ontology to point to the \textit{geometry} of a \textit{feature}, but the \texttt{asWKT} property of GeoSPARQL to represent the geometry.
+LinkedGeoData uses the \texttt{geometry} property of this ontology to point to the \textit{geometry} of a \textit{feature}, but the \texttt{Geometry} class and \texttt{asWKT} property of GeoSPARQL to represent its \textit{geometry}.
 
 \subsubsection{\gls{spatial}}
-\gls{spatial} is an ontology that aims to provide properties to make topological relationships of \texttt{features} explicit, which else would only exist implicit in the geometric data. Included properties cover all topological relationships described by RCC-8 like does a \textit{feature} overlap with another \textit{feature}. One problem of making the relationships explicit is that these relationships have to be adopted if the \textit{geometry} of \textit{features} changes.
+\gls{spatial} is an ontology that aims to provide properties to make topological relationships of \texttt{features} explicit, which else would only exist implicitly in the geometric data. Included properties cover all topological relationships described by RCC-8 such as: does a \textit{feature} overlap with another \textit{feature}. One problem of making the relationships explicit is that these relationships have to be adopted if the \textit{geometry} of \textit{features} changes.
 
 \subsection{GeoSPARQL}
-GeoSPARQL defines a set of \gls{sparql} extension functions, a set of \gls{rif} rules, and a core ontology for geographic information\cite{perry_ogc_2012}. ``GeoSPARQL attempts to unify data access for the geospatial Semantic Web""\cite{battle_geosparql:_2011}. Figure \ref{fig:related-work-geospatial-ontologies:geosparql} shows a visualization of this core ontology. It has two major classes namely \texttt{Feature} to represent spatial \textit{features} and \texttt{Geometry} to represent \textit{geometries}. An instance of \texttt{Geometry} can be assigned to an instance of \texttt{Feature} with the property \texttt{hasGeometry}. It is based on the Simple Features model\footnote{\url{http://www.ogcnetwork.net/gml-sf}} like \gls{ngeo}. However, GeoSPARQL defines two properties that can be used to point to the serialization of a geometry; either \texttt{asWKT} for \gls{wkt} or \texttt{asGML} for \gls{gml}; in contrast to \gls{ngeo}, where \textit{geometries} are represented in pure \gls{rdf}. The fact that \textit{geometries} are serialized using \gls{wkt} or \gls{gml} simplifies the integration of \textit{geometries}, because these serialization formats are widely supported (e.g. QGIS). GeoSPARQL proposes furthermore a set of extension functions that can be separated into two categories. The first category includes functions that take a number of \textit{geometries} as arguments and produces a new one or returns a value with a certain datatype. The distance function for instance takes two \textit{geometries} as well as a reference to measurement unit like meters and returns a \texttt{xsd:double} value. The second category are functions that are equivalent to the properties describing topological relationships (e.g. contains, coveredBy), only that these functions can be used in filters and are computed on-the-fly; not asserted in the knowledge base. However, the used triple store or \gls{ld} framework must support those functions and the GeoSPARQL standard in general, which limits the choice. As it will be discussed in section \ref{solution-architectural-prototype:rdf-framework}, one of the common frameworks Apache Jena and its native triple store is at the moment not compliant with the GeoSPARQL standard. 
+GeoSPARQL defines a set of \gls{sparql} extension functions, a set of \gls{rif} rules, and a core ontology for geographic information\cite{perry_ogc_2012}. \textit{``GeoSPARQL attempts to unify data access for the geospatial Semantic Web''}\cite{battle_geosparql:_2011}. Figure \ref{fig:related-work-geospatial-ontologies:geosparql} shows a visualization of this core ontology. It has two major classes namely \texttt{Feature} to represent spatial \textit{features} and \texttt{Geometry} to represent \textit{geometries}. An instance of \texttt{Geometry} can be assigned to an instance of \texttt{Feature} with the property \texttt{hasGeometry}. It is based on the Simple Features model\footnote{\url{http://www.ogcnetwork.net/gml-sf}} like \gls{ngeo}. GeoSPARQL defines two properties that can be used to point to the serialization of a geometry; either \texttt{asWKT} for \gls{wkt} or \texttt{asGML} for \gls{gml}; in contrast to \gls{ngeo}, where \textit{geometries} are represented in pure \gls{rdf}. The fact that \textit{geometries} are serialized using \gls{wkt} or \gls{gml} simplifies the integration of \textit{geometries}, because these serialization formats are widely supported (e.g. QGIS). GeoSPARQL proposes furthermore a set of extension functions that can be separated into two categories. The first category includes functions that take a number of \textit{geometries} as arguments and produces a new one or returns a value with a certain datatype. The distance function for instance takes two \textit{geometries} as well as a reference to the measurement unit like meters and returns a \texttt{xsd:double} value. The second category are functions that are equivalent to the properties describing topological relationships (e.g. contains, coveredBy), only that these functions can be used in filters and are computed on-the-fly; not asserted in the knowledge base. However, the used triple store or \gls{ld} framework must support those functions and the GeoSPARQL standard in general, which limits the choice. As it will be discussed in section \ref{solution-architectural-prototype:rdf-framework}, one of the common frameworks Apache Jena and its native triple store is at the moment not compliant with the GeoSPARQL standard. 
 
 \begin{figure}[h]
     \centering
@@ -344,7 +376,7 @@ Multiple universities (e.g. Linked Universities\footnote{\url{http://linkedunive
 
 University of Münster started an Open Data initiative named LODUM\cite{kesler_linked_2012} from which a map application\footnote{\url{http://app.uni-muenster.de/Karte/}} evolved that shows the location of buildings and which departments are located in the selected building, but there is no deeper insight into the buildings. However, there is a publication of the initiative that deals with the issue of indoor navigation \cite{kostic_automated_2015-1}. Furthermore an indoor map ontology named LIMAP\footnote{\url{http://lodum.de/results/}} was designed.
 
-University of Southampton is a further university that exposed spatial information about their campus as \gls{lod}. In contrast to the map of the LODUM initiative Southampton`s map application\footnote{\url{http://maps.southampton.ac.uk/}} (see figure \ref{fig:related-work-map-app:southampton}) gives insight into buildings and shows the location of certain rooms with the ability to switch the floor. It shows also computer rooms with their current estimated capacity and opening hours.  
+University of Southampton is another university that exposed spatial information about their campus as \gls{lod}. In contrast to the map of the LODUM initiative Southampton`s map application\footnote{\url{http://maps.southampton.ac.uk/}} (see figure \ref{fig:related-work-map-app:southampton}) gives insight into buildings and shows the location of certain rooms with the ability to switch the floor. It shows also computer rooms with their current estimated capacity and opening hours.  
 
 \begin{figure}[h]
     \centering
@@ -359,7 +391,7 @@ University of Oxford has also exposed spatial information in form of \gls{lod} o
 \label{related-work-indoor-modelling}
 Section \ref{related-work-geospatial-ontologies} outlined ontologies to describe the spatial extent of \textit{features} and topological relationships between them, but those ontologies are not intended for expressing the characteristics of \textit{features} in an indoor environment; like for example that a \textit{feature} is a learning room with certain opening hours or an elevator to get from one floor to another. This section discusses previous efforts and ontologies to model indoor environments and also how to navigate in them.
 
-IndoorGML\footnote{\url{http://indoorgml.net/}} is a \gls{xml} schema of OGC that aims to provide a framework for representing and exchanging indoor spatial information, but no efforts has yet been made to transform its model to the \gls{ld} domain. OntoNav presents a semantic indoor navigation system that aims to follow a user-centric paradigm in which the capabilities, limitations and preferences of the user are taken into consideration for computing the best suiting path. A path is according to OntoNav a sequence of connected corridors, passages (stairways, ramps, elevators, etc.) and exits from one location to another\cite{anagnostopoulos_ontonav:_2005}. ONALIN is a ontology that models the indoor environment similar to OntoNav, but it follows the approach of modeling buildings as network of hallways consisting of different points (start, decision and corner points); resulting in a finer granularity. ONALIN also takes the American Disability Act into consideration, which leads to properties for describing the height and number of steps of stairways or the height of sinks in a restroom \cite{dudas_onalin:_2009}. Both ontologies are at the moment not locatable over the Web. iLoc is an ontology that has a minimal set of classes to describe the internal structure of a building from rooms, floors to vertical passages like elevators and stairways. Points of interest like entrances and landmarks play a special role in the navigation. A route section connects then two points and asserts that there is a walk-able path between them. This route section can have certain constraints like an access control measurement is required or steps have to be climbed \cite{szasz_ilocbuilding_2010}.
+IndoorGML\footnote{\url{http://indoorgml.net/}} is a \gls{xml} schema of OGC that aims to provide a framework for representing and exchanging indoor spatial information, but no efforts has yet been made to transform its model to the \gls{ld} domain. OntoNav presents a semantic indoor navigation system that aims to follow a user-centric paradigm in which the capabilities, limitations and preferences of the user are taken into consideration for computing the best suiting path. A path is according to OntoNav a sequence of connected corridors, passages (stairways, ramps, elevators, etc.) and exits from one location to another\cite{anagnostopoulos_ontonav:_2005}. ONALIN is a ontology that models the indoor environment similarly to OntoNav, but it follows the approach of modeling buildings as network of hallways consisting of different points (start, decision and corner points); resulting in a finer granularity. ONALIN also takes the American Disability Act into consideration, which leads to properties for describing the height and number of steps of stairways or the height of sinks in a restroom \cite{dudas_onalin:_2009}. Both ontologies are at the moment not locatable over the Web. iLoc is an ontology that has a minimal set of classes to describe the internal structure of a building from rooms, floors to vertical passages like elevators and stairways. Points of interest like entrances and landmarks play a special role in the navigation. A route section connects two points and asserts that there is a walk-able path between them. This route section can have certain constraints like an access control measurement is required or steps have to be climbed \cite{szasz_ilocbuilding_2010}.
 
 
 \subsection{Other ontologies}
@@ -383,7 +415,7 @@ Section \ref{solution-data-acquisition-tables} deals with the problem of extract
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.75\textwidth]{graphics/dataAcquisitionSources.png}
+    \includegraphics[width=1.0\textwidth]{graphics/dataAcquisitionSources.png}
     \caption{Visualization of the data sources}
     \label{fig:solution-data-acquisition:sources}
 \end{figure}
@@ -423,14 +455,38 @@ Due to the lack of alternatives, the approach used for this thesis was to manual
 
 The RESTful API of the central information system TISS returns results of its services  either in form of an \gls{xml} document or \gls{json}. Thus the responses are already in a (semi-)structured format; the question is how to transform this data into \gls{ld}. \gls{xslt} offers an useful language for transforming a source \gls{xml} document into a target document that could be likewise an \gls{xml} document or other representations like plain text or HTML.  The data-management layer (see section \ref{solution-architectural-prototype:ld-management}) of the proposed system uses this language therefor to transform a \gls{xml} document with a known schema into a RDF/XML document, which expresses \gls{rdf} data as an \gls{xml} document. GRDDL\cite{connolly_gleaning_2007} can be used to mark parts of \gls{xml} documents with pointers to \gls{xslt} stylesheets, but this has to be implemented by the API designers.
 
-\section{Prototype of ontology}
+\section{Prototype of ontologies}
 \label{solution-ontology-prototype}
-In this section two ontologies will be proposed that are intended to cover the specific domain of spatial university data. Section \ref{solution-ontology-prototype:spatial} presents an ontology for describing the campus from buildings to indoor environments, whereas section \ref{solution-ontology-prototype:navigation} proposes an ontology for modelling indoor navigation. The design process took best practises for publishing ontologies\cite{berrueta_best_2008} into consideration. In order to enhance the interchangeability of the described data it is commonly understood to reuse terms of common ontologies, which is why chapter \ref{related-work-chapter} outlined common geospatial ontologies as well as ontologies and approaches for modelling indoor environments. The conclusion of the evaluation was to use the GeoSPARQL ontology for describing the geometry of indoor features and buildings. Hence, the system architecture has to consider an additional prerequisite; the used triple store should support the GeoSPARQL extensions and for the purpose of better scalability also spatial indexing.
+In this section two ontologies will be proposed, which are intended to cover the specific domain of spatial university data. Section \ref{solution-ontology-prototype:spatial} presents an ontology for describing the campus from buildings to indoor environments, whereas section \ref{solution-ontology-prototype:navigation} proposes an ontology for modelling indoor navigation. The design process took best practises for publishing ontologies\cite{berrueta_best_2008} into consideration. In order to enhance the interchangeability of the described data it is commonly understood to reuse terms of common ontologies, which is why chapter \ref{related-work-chapter} outlined common geospatial ontologies as well as ontologies and approaches for modelling indoor environments. The conclusion of the evaluation was to use the GeoSPARQL ontology for describing the geometry of indoor features and buildings. Hence, the system architecture has to consider an additional prerequisite; the used triple store should support the GeoSPARQL extensions and for the purpose of better scalability also spatial indexing.
 
 \subsection{Spatial ontology}
 \label{solution-ontology-prototype:spatial}
+This section presents the spatial ontology, which aims to model university facilities from buildings, rooms to elevators and entrances. Figure \ref{fig:solution-ontology-prototype:spatial} shows the ontology in detail. It has three major classes \texttt{Campus},  \texttt{Building} and \texttt{BuildingUnit}, which are disjoint with each other. All of them are subclasses of \texttt{Feature}, which is a class of GeoSPARQL. Consequently, each member of these classes can have \textit{geometries} assigned to them. 
 
-\todo{describe ... }
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{graphics/solution/ontology/tuViennaSpatialOntology.png}
+    \caption{Visualization of the spatial ontology}
+    \label{fig:solution-ontology-prototype:spatial}
+\end{figure}
+
+\paragraph{Campus} describes a collection of buildings that are affiliated with the same educational institute. The property \texttt{isCampusOf} sets the campus in relationship with its educational institute.
+
+\paragraph{Building} describes a building that exists independently; it must not be  contained in other buildings or building units. The property \texttt{buildingCode} points to a string that identifies the building uniquely on the campus. A building can have an address, which is modelled using the class \texttt{Address} of \gls{locn}. An instance of \texttt{Building} points to its address by using the property \texttt{locn:address}. A building is assigned to its campus using the property \texttt{atCampus}. This class is equivalent to the building class of \gls{rooms}.
+
+\paragraph{BuildingUnit} describes an unit of a building, which can consist of further building units. For example, a floor inside a building is a building unit as well as the floor section, which is located on this floor. A building unit is assigned to the building or other building units of which it is a part with the property \texttt{isBuildingUnitOf}, but a building unit cannot be part of itself. The inverse property is \texttt{containsBuildingUnit}. The property \texttt{buildingUnitCode} points to the string that identifies the building unit uniquely inside the building.
+
+\subparagraph{BuildingTract} is a building unit, which decomposes a building horizontally in (mostly disjunctive) vertical areas, which can contain further building units like a room.
+
+\subparagraph{Floor} is a building unit that decomposes a building unit or building vertically in disjunctive horizontal areas, which can contain further building units like rooms. A floor has an additional property \texttt{aboveFloor} that indicates that this floor is above another floor to model vertical, topological relations of floors. This class is equivalent to the floor class of \gls{rooms}. 
+
+\subparagraph{FloorSection} is a building unit that describes an unique identifiable part of a floor inside a building that is distinct from other parts of the same floor. This class is as well equivalent to the class \texttt{FloorSection} of \gls{rooms}.
+
+\subparagraph{Room} is a building unit that describes a room. There are multiple more specific classes like \texttt{LectureRoom}, \texttt{OfficeRoom}, \texttt{SeminarRoom}, \texttt{SanitaryRoom} and \texttt{LearningRoom}. This class is as well equivalent to the class floor section of \gls{rooms}
+
+\paragraph{Stairway, elevator and passageway} are building units that have the main purpose of enabling a person to get fast from one point to another inside of a building.
+
+\paragraph{Access unit} describes a building unit that provides access to a building unit or building like an entrance to a building. \texttt{Access unit} has more specific subclasses \texttt{Door} (inside) and \texttt{Entrance}$/$\texttt{Exit}.
 
 \subsection{Navigation ontology}
 \label{solution-ontology-prototype:navigation}
@@ -474,20 +530,23 @@ SELECT ?xRouteFeature ?route ?yRouteFeature ?length WHERE
     # Remove all routes that have certain constraints.
     FILTER NOT EXISTS {
     	?route navi:hasConstraint ex:building-id-H-opening-hours .
+    	# ... check if in opening hours.
     }
 }
 \end{lstlisting}
 
 Listing \ref{lst:solution-ontology-prototype:navigation:prepare} shows a query returning a result set of all \textit{features} (xRouteFeature) that are part of a possible path between two given \textit{features} (startFeature, endFeature) and all the adjacent, noteworthy \textit{features} (yRouteFeature) for each of them. An adjacent \textit{feature} (yRouteFeature) is noteworthy, if there is a possible path to the target \textit{feature} (endFeature) and the route R(xRouteFeature, yRouteFeature) has no undesirable constraints. Additionally, the length will be determined for each route in order to have a weight for the path finding algorithm. The length is simply the distance between the x- and y-\textit{feature} of a route.
 
-\subparagraph{Access} ...
+\subparagraph{PoR} is a point of a \texttt{Route} that has no further purpose. For instance a point inside of a hallway that is placed at a fork.
 
-\todo{finish ... }
+\subparagraph{Access} is a class to distinguish between the access to a \textit{feature} from navigating through a \textit{feature}. A door for instance can provide access to a room, but can also be connected to a \texttt{PoR} inside of a room representing a \texttt{Route}. This is important, because if a room is part of a \texttt{Route} then all the \texttt{Route}s inside of the room will be ignored. The property \texttt{accessTo} describes the relationship between a member of \texttt{Access} like a door with the spatial \textit{feature} for which it provides an access. 
+
+\subparagraph{Constraint} describes barriers, obstacles and constraints that must be considered, when using a certain \texttt{NavigationEntity} (\texttt{Route} or \texttt{Access}). \texttt{TimeConstraint} is a subclass of \texttt{Constraint} and describes the time in which the \texttt{NavigationEntity} can be used. The advantage is that the opening hours of a building could be represented by a member of \texttt{TimeConstraint} and all its entrances can reference to it in contrast to a property pointing to a literal. This constraint would apply to nearly all person (except for caretakers), \texttt{MobilityConstraint} describes obstacles that are hard to overcome for person with mobility impairments when taking a certain \texttt{Route} or \texttt{Access}. There could for example be some steps after a door that provides access to a room. The property \texttt{hasConstraint} describes the relationship between the \texttt{NavigationEntity} and its \texttt{Constraint}s. New constraint classes can simply be added.
 
 \section{Architectural prototype}
 \label{solution-architectural-prototype}
 
-This section proposes a architectural prototype of a software system that manages spatial \gls{lod} from integration to publication. Figure \ref{fig:solution-architectural-prototype} shows an overview of this architecture, which is separated into three layers; the data management, service and presentation layer. The shown data sources (described in section \ref{solution-data-acquisition}) build the knowledge base of the system. Section\ref{solution-architectural-prototype:ld-management} discusses the data management layer, which deals with the integration of those data sources and the maintenance of it. The linking of the local spatial \gls{ld} with external sources like LinkedGeoData and GeoNames is described in section \ref{solution-architectural-prototype:linking}. After the local spatial data has been integrated into the system, the resulting \gls{ld} can be published. Section \ref{solution-architectural-prototype:ld-publishing} discusses different approaches for the publication with the goal to make the underlying \gls{ld} easily accessible by machine and human agents. The prototype of a map application that make use of the provided services of the system is presented in the subsequent section \ref{solution-map-application}.   
+This section proposes a architectural prototype of a software system that manages spatial \gls{lod} from integration to publication. Figure \ref{fig:solution-architectural-prototype} shows an overview of this architecture, which is separated into three layers; the data management, service and presentation layer. The shown data sources (described in section \ref{solution-data-acquisition}) build the knowledge base of the system. Section\ref{solution-architectural-prototype:ld-management} discusses the data management layer, which deals with the integration of those data sources and the maintenance of it. The linking of the local spatial \gls{ld} with external sources like LinkedGeoData and GeoNames is described in section \ref{solution-architectural-prototype:linking}. After the local spatial data has been integrated into the system, the resulting \gls{ld} can be published. Section \ref{solution-architectural-prototype:ld-publishing} discusses different approaches for the publication with the goal to make the underlying \gls{ld} easily accessible by machine and human agents. The prototype of a map application that makes use of the provided services of the system is presented in the subsequent section \ref{solution-map-application}.   
 
 In order to implement the suggested prototype the programming language Java was used and section \ref{solution-architectural-prototype:rdf-framework} outlines the common frameworks for handling \gls{ld} in this language. It also describes the reasoning, why RDF4J\footnote{\url{http://rdf4j.org/}} was chosen.
 
@@ -511,11 +570,11 @@ Handling \gls{rdf} data (as representation of \gls{ld}) is an essential part of 
 	\item it should be possible to reason over stored \gls{ld} given a list of ontologies. 
 \end{enumerate}
 
-There are currently two common frameworks for handling \gls{rdf} data in the Java environment namely Apache Jena\footnote{\url{https://jena.apache.org/}} and Sesame, which has recently been migrated to the project RDF4J\footnote{\url{http://rdf4j.org/}}. Both are Open Source, but none fulfils all of the mentioned requirements, why it is also necessary to take plug-ins and external triple stores into consideration.
+There are currently two common frameworks for handling \gls{rdf} data in the Java environment namely Apache Jena\footnote{\url{https://jena.apache.org/}} and Sesame, which has recently been migrated to the project RDF4J\footnote{\url{http://rdf4j.org/}}. Both are Open Source, but none fulfils all of the mentioned requirements, therefore it is also necessary to take plug-ins and external triple stores into consideration.
 
 \paragraph{Apache Jena} is a framework that can be used to store, manipulate and query \gls{ld}. Its architecture consists basically of three layers, the store API at the bottom, the inference API in the middle, the RDF API and  SPARQL API respectively as interface to the application code \cite{the_apache_software_foundation_jena_????}. In contrary to RDF4J, \gls{rdf} data can be parsed into a model instance and thenceforward this model can be used to query and reason over it. RDF4J requires this \gls{rdf} data to be at least stored into a repository embedded in memory in order to be queried using \gls{sparql}. One advantage of Jena over RDF4J is also the built-in reasoner that supports simple \gls{rdfs} reasoning as well as multiple profiles of \gls{owl} \cite{the_apache_software_foundation_jena_????-1}. Jena supports different types of storage from native triple store to a memory based one; also custom triple stores can be used, but in this case an adopter is required. In case of spatial functionalities Jena does support spatial relationships like near by, within box, intersect box or north/south/west/east of \cite{the_apache_software_foundation_spatial_????}, but it is not compliant to the GeoSPARQL standard . Functions like computing the minimal distance between two geometries are not covered. There is also no support for \gls{gml} serializations of geometries. As a consequence requirement \textbf{\textit{5}} is not fulfilled. A way to circumvent this problem is to use an external triple store that provides these spatial functionalities, but as mentioned above this triple store must offer an adaptor for Jena, which limits the number of considerable triple stores.
  
-\paragraph{RDF4J} is as well a framework to store, manipulate and query \gls{ld}, but there are conceptual differences. As mentioned above in RDF4J actions are carried out against repositories and a model has less functionality than in Jena; it is simply a collection of statements (triples). RDF4J provides \gls{rdfs} reasoning, but nothing more expressive than that. However, custom reasoners can be added like in Apache Jena too. An advantage of RDF4J over Jena is the simplicity of adding other storages besides the built-in ones (from native triple stores to in-memory repositories). It provides for example classes to use a \gls{sparql} endpoint as repository. In fact there are multiple external triple stores that can be used with RDF4J over HTTP like GraphDB\footnote{\url{http://ontotext.com/products/graphdb/}}, Stardog\footnote{\url{http://docs.stardog.com/}} or Blazegraph\footnote{\url{https://www.blazegraph.com/product/}}. RDF4J does have a package named \texttt{rdf4j-queryalgebra-geosparql} to add spatial functionalities compliant with GeoSPARQL, but during testing the minimal distance function always returned null. It was not clear, if there was a bug in the framework or it was used incorrectly. This leads to a major drawback of RDF4J in contrast to Jena, it has a sparse documentation at the moment of writing.
+\paragraph{RDF4J} is as well a framework to store, manipulate and query \gls{ld}, but there are conceptual differences. As mentioned above in RDF4J actions are carried out on repositories and a model has less functionality than in Jena; it is simply a collection of statements (triples). RDF4J provides \gls{rdfs} reasoning, but nothing more expressive than that. However, custom reasoners can be added like in Apache Jena too. An advantage of RDF4J over Jena is the simplicity of adding other storages besides the built-in ones (from native triple stores to in-memory repositories). It provides for example classes to use a \gls{sparql} endpoint as repository. In fact there are multiple external triple stores that can be used with RDF4J over HTTP like GraphDB\footnote{\url{http://ontotext.com/products/graphdb/}}, Stardog\footnote{\url{http://docs.stardog.com/}} or Blazegraph\footnote{\url{https://www.blazegraph.com/product/}}. RDF4J does have a package named \texttt{rdf4j-queryalgebra-geosparql} to add spatial functionalities compliant with GeoSPARQL, but during testing the minimal distance function always returned null. It was not clear, if there was a bug in the framework or it was used incorrectly. This leads to a major drawback of RDF4J in contrast to Jena, it has a sparse documentation at the moment of writing.
 
 \subsubsection{Conclusion}
 
@@ -523,7 +582,7 @@ The support of spatial functionalities in \gls{sparql} queries like computing th
 
 \subsection{\gls{ld} Management}
 \label{solution-architectural-prototype:ld-management}
-At the bottom of the proposed, layered software system is the data management layer, which is responsible for integrating and maintaining \gls{ld}. The first step is called mediation and it deals with the problem of integrating data from different data sources and updating them in a frequency that fits the characteristics of the dataset. The triple store manager controls the access to the used triple store. For this thesis, GraphDB was chosen as explained in the previous section \ref{solution-architectural-prototype:rdf-framework}, but the idea of the triple store manager is to hide this fact; also other storage solution that are compatible with RDF4J and fulfil the mentioned requirements can be used. All these aspects are outlined in the following in more detail, starting with the designed naming scheme for resources.
+At the bottom of the proposed, layered software system is the data management layer, which is responsible for integrating and maintaining \gls{ld}. The first step is called mediation and it deals with the problem of integrating data from different data sources and updating them in a frequency that fits the characteristics of the data. The triple store manager controls the access to the used triple store. For this thesis, GraphDB was chosen as explained in the previous section \ref{solution-architectural-prototype:rdf-framework}, but the idea of the triple store manager is to hide this fact; also other storage solution that are compatible with RDF4J and fulfil the mentioned requirements can be used. All these aspects are outlined in the following in more detail, starting with the designed naming scheme for resources.
 
 
 \subsubsection{Naming scheme}
@@ -576,7 +635,7 @@ As mentioned above, the mediator is responsible for the data acquisition and the
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.75\textwidth]{graphics/solution/architecture/mediator.png}
-    \caption{UML class diagram of the mediator}
+    \caption{UML class diagram of the \texttt{Mediator}}
     \label{fig:solution-architectural-prototype:mediator-uml-class-dia}
 \end{figure}
 
@@ -585,7 +644,7 @@ As mentioned above, the mediator is responsible for the data acquisition and the
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.4\textwidth]{graphics/solution/architecture/dataacquirer.png}
-    \caption{UML class diagram of the data acquire}
+    \caption{UML class diagram of the \texttt{DataAcquirer}}
     \label{fig:solution-architectural-prototype:acquirer-uml-class-dia}
 \end{figure}
 
@@ -600,7 +659,7 @@ As mentioned above, the mediator is responsible for the data acquisition and the
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.6\textwidth]{graphics/solution/architecture/dataintegrator.png}
-    \caption{UML class diagram of the data integrator}
+    \caption{UML class diagram of the \texttt{DataIntegrator}}
     \label{fig:solution-architectural-prototype:acquirer-uml-class-dia}
 \end{figure}
 
@@ -609,7 +668,7 @@ As mentioned above, the mediator is responsible for the data acquisition and the
 
 \subsection{Linking}
 \label{solution-architectural-prototype:linking}
-The first two principles of \gls{ld} were mentioned in the previous section, when the naming scheme was discussed. A further important principle is interlinking the local resources with other local resources and external ones, so that more things can be discovered \cite{berners-lee_linked_2009}. There are basically to ways to generate links between resources; setting them manually or auto-generating them. However, setting them manually is not feasible, due to large amount of spatial resources that could be part of this software system. Hence, the links must be generated automatically. There are in general two approaches; a \textit{key-based approach} or a \textit{similarity-based approach}\cite{heath_linked_2011}. The \textit{key-based approach} is applicable for resources that share identifiers with a well-known naming schemata; for books this could be ISBN. In case of spatial data of the \gls{tuv} the identifier of the building units (rooms, floors, building tracts) can be used internally for linking for instance rooms to the building tract of which they are a part. This section aims to deal with interlinking local resources with external \gls{ld} like GeoNames or LinkedGeoData, which leads to the issue that there is no such common naming schemata for places, addresses or other spatial entities, so that the \textit{similarity-based approach} must be applied. Using this approach linkage heuristics that compare one or more properties of resources are employed and links are generated, if the heuristic results in a confidence value for two resources that exceeds a given threshold.
+The first two principles of \gls{ld} were mentioned in the previous section, when the naming scheme was discussed. A further important principle is interlinking the local resources with other local resources and external ones, so that more things can be discovered \cite{berners-lee_linked_2009}. There are basically two ways to generate links between resources; setting them manually or auto-generating them. However, setting them manually is not feasible, due to large amount of spatial resources that could be part of this software system. Hence, the links must be generated automatically. There are in general two approaches; a \textit{key-based approach} or a \textit{similarity-based approach}\cite{heath_linked_2011}. The \textit{key-based approach} is applicable for resources that share identifiers with a well-known naming schemata; for books this could be ISBN. In case of spatial data of the \gls{tuv} the identifier of the building units (rooms, floors, building tracts) can be used internally for linking for instance rooms to the building tract of which they are a part. This section aims to deal with interlinking local resources with external \gls{ld} like GeoNames or LinkedGeoData, which leads to the issue that there is no such common naming schemata for places, addresses or other spatial entities, so that the \textit{similarity-based approach} must be applied. Using this approach linkage heuristics that compare one or more properties of resources are employed and links are generated, if the heuristic results in a confidence value for two resources that exceeds a given threshold.
 
 In order to accomplish this task the Silk discovery framework\cite{volz_discovering_2009} was used and as the visualization of the software system shows (see figure \ref{fig:solution-architectural-prototype}) its standalone-machine is directly communicating with the GraphDB triple store over HTTP; making use of the \gls{sparql} endpoint of the triple store. The framework provides a set of numeric, string as well as geographical matchers that can be combined to a heuristic. A heuristic basically consists of a transformation step, a comparison step and eventually an aggregation step for combining the similarity scores of comparisons. In the following the linking of spatial \textit{features} of the proposed system and GeoNames as well as LinkedGeoData is discussed.
 
@@ -617,7 +676,7 @@ In order to accomplish this task the Silk discovery framework\cite{volz_discover
 
 GeoNames is a geographical database with over 10 million geographical names and over 9 million unique \textit{features}; it is available free of charge under a creative commons license \cite{volz_discovering_2009}. DBPedia among others has links pointing to GeoNames, which makes it an attractive target for linking spatial \textit{features} of the proposed system to \textit{features} in GeoNames database.  
 
-GeoNames does not expose its \gls{lod} over a \gls{sparql} endpoint, but instead provides a \gls{rdf} dump for download\footnote{\url{http://download.geonames.org/all-geonames-rdf.zip}}. However, the dump is not fully compliant with \gls{rdf}, it is rather a text file with a list of \gls{rdf} snippets (see appendix for a UNIX command to transform it into a single \gls{rdf} file). The dump is quite large and therefore not suitable to be used directly with the Silk framework, wherefore the dump was stored into the local triple store in a separate repository; this repository provides then a \gls{sparql} endpoint. 
+GeoNames does not expose its \gls{lod} over a \gls{sparql} endpoint, but instead provides a \gls{rdf} dump for download\footnote{\url{http://download.geonames.org/all-geonames-rdf.zip}}. However, the dump is not fully compliant with \gls{rdf}, it is rather a text file with a list of \gls{rdf} snippets. The dump is quite large and therefore not suitable to be used directly with the Silk framework, wherefore the dump was stored into the local triple store in a separate repository; this repository provides then a \gls{sparql} endpoint. 
 
 \paragraph{Equivalent buildings} of the proposed system and GeoNames shall be detected. In case of a match a \texttt{owl:sameAs} link shall be generated to indicate that both resources reference to the same thing --- same building. Each \texttt{feature} in GeoNames has a \texttt{featureCode} and \texttt{featureClass}. The \texttt{featureClass} of a feature describes the category it belongs to like spot (buildings, places), parks, or forest, whereas \texttt{featureCode} describes the more precise subcategory it belongs to like university or hotel. The \texttt{featureCode} is the concatenation of the category and subcategory separated by a point. University buildings for example have the \texttt{featureCode} \texttt{S.UNIV}, where \texttt{S} stands for spot and \texttt{UNIV} for university. This is important because the designed heuristic has to ensure that both resources reference to the same thing --- a building of a university. Figure \ref{fig:solution-architectural-prototype:ld-management:geonames-equivalent} shows the designed heuristic. The proposed system uses GeoSPARQL properties and \gls{wkt} literals to express the geographical location of a building, whereas GeoNames simply uses the (long, lat) properties of \gls{geo}. The geotransformer of the Silk framework transforms this different representations into an intermediate one that can be compared by the provided geographic matchers. To find equivalent \textit{features} the minimum distance between the two observed \textit{features} will be computed and if the distance is lower than 15 meters than it is considered to be a candidate; the two other comparison must also hold true.  
 
@@ -721,7 +780,7 @@ The disadvantage of this approach is that it requires a lot of factories that ar
 
 A \texttt{IService} has a reference to the \texttt{TripleStoreManager} and requests a connection to the triple store, when needed. Most of the services are implemented using \gls{sparql} queries; the mentioned \texttt{DescribeResourceService} uses the describe operator of \gls{sparql}. The result of services is then mapped into the corresponding \texttt{Dto} in order to be compliant with the multi-tiered architecture and to simplify the presentation, but there is like with relational databases an impedance mismatch between \gls{ld} and Java that must be considered.
 
-\paragraph{Dto \& Impedance mismatch:} The service layer directly queries the given \gls{ld}, which is why no domain objects are required to interact with the underlying data-management layer. However, the resulting \gls{ld} describing entities like rooms and buildings must be mapped into corresponding objects that can be passed to the presentation layer; data-transfer objects are a common pattern for this issue and are used in this proposed system as well. \texttt{Dto}s allow additionally to minimize the amount of required requests; a \texttt{Dto} describing a certain building could contain information about its rooms and floors including \textit{geometries}, so that not several requests are required to gather all the information. Figure \ref{fig:solution-architectural-prototype:dto-uml} shows the UML class diagram of a portion of the used \texttt{Dto}s. There is a still an issue that has not been solved yet and this is the question of how the \texttt{Dto}s are assembled. One possibility is to implement the assembler manually, which is prone to failures and repeating, tedious work to do. It is also not necessary, due to available frameworks that facilitate the assembling. Empire\footnote{\url{https://github.com/mhgrove/Empire}} as well as Alibaba\footnote{\url{https://bitbucket.org/openrdf/alibaba}} are frameworks enhancing Sesame (now RDF4J) with functionalities that are required for designing more complex applications based on \gls{ld}. Empire aims to be the equivalent of JPA\footnote{\url{http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html}} only for \gls{rdf} data stores. While both frameworks provide the ability to map \gls{rdf} data into Java objects, they are not yet compatible with RDF4J and would be an overload for the intended use case. For this thesis the framework Pinto\footnote{\url{https://github.com/stardog-union/pinto}} was used. It is designed to transform \gls{rdf} data into Java beans and is therefore lightweight in comparison to the previous mentioned ones. It provides annotations to assign \gls{rdf} types to classes and properties in \gls{rdf} to getter/setter methods in the corresponding class.
+\paragraph{Dto \& Impedance mismatch:} The service layer directly queries the given \gls{ld}, which is why no domain objects are required to interact with the underlying data-management layer. However, the resulting \gls{ld} describing entities like rooms and buildings must be mapped into corresponding objects that can be passed to the presentation layer; data-transfer objects are a commonly used pattern for this issue and are used in this proposed system as well. \texttt{Dto}s allow additionally to minimize the amount of required requests; a \texttt{Dto} describing a certain building could contain information about its rooms and floors including \textit{geometries}, so that not several requests are required to gather all the information. Figure \ref{fig:solution-architectural-prototype:dto-uml} shows the UML class diagram of a portion of the used \texttt{Dto}s. There is a still an issue that has not been solved yet and this is the question of how the \texttt{Dto}s are assembled. One possibility is to implement the assembler manually, which is prone to failures and repeating, tedious work to do. It is also not necessary, due to available frameworks that facilitate the assembling. Empire\footnote{\url{https://github.com/mhgrove/Empire}} as well as Alibaba\footnote{\url{https://bitbucket.org/openrdf/alibaba}} are frameworks enhancing Sesame (now RDF4J) with functionalities that are required for designing more complex applications based on \gls{ld}. Empire aims to be the equivalent of JPA\footnote{\url{http://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html}} only for \gls{rdf} data stores. While both frameworks provide the ability to map \gls{rdf} data into Java objects, they are not yet compatible with RDF4J and would be an overload for the intended use case. For this thesis the framework Pinto\footnote{\url{https://github.com/stardog-union/pinto}} was used. It is designed to transform \gls{rdf} data into Java beans and is therefore lightweight in comparison to the previous mentioned ones. It provides annotations to assign \gls{rdf} types to classes and properties in \gls{rdf} to getter/setter methods in the corresponding class.
 
 \begin{figure}[h]
     \centering
@@ -730,16 +789,16 @@ A \texttt{IService} has a reference to the \texttt{TripleStoreManager} and reque
     \label{fig:solution-architectural-prototype:dto-uml}
 \end{figure}
 
-For this thesis the mapping of \gls{rdf} data into Java objects causes no major problems, but there is a impedance mismatch between these both worlds that must be considered. Java and \gls{owl}/\gls{rdf} are conceptionally different; Java focuses on classes, whereas \gls{owl}/\gls{rdf}  focuses on properties. An issue could be that Java only supports simple inheritance of classes, but multiple inheritance of interfaces. A resource in \gls{rdf} could also have two types (classes) and no class is the subclass of the other, which cannot be resolved; a room could be for instance a seminar and a learning room. Due to these mismatches and the fact that \texttt{Dto}s shall not only be  objects for the presentation layer, but also be transformed into a certain \gls{rdf} format (see \gls{ld} principles), each \texttt{Dto} contains the original \gls{rdf} model, which was the knowledge base for the mapping.
+For this thesis the mapping of \gls{rdf} data into Java objects causes no major problems, but there is a impedance mismatch between these both worlds that must be considered. Java and \gls{owl}/\gls{rdf} are conceptionally different; Java focuses on classes, whereas \gls{owl}/\gls{rdf}  focuses on properties. One of these mismatches is the fact that Java only supports single inheritance of classes (and multiple inheritance of interfaces). In an ontology a class can be the subclass of multiple other classes. Furthermore, an instance can be a member of multiple classes, where a class has not necessarily to be a superclass of the other, which is also not possible in Java; a room could be for example a seminar and a learning room (in Java it could only be one of them at a time).
 
 \subsubsection{Presentation layer}
-The presentation layer is the uppermost layer of the proposed software system and is responsible for presenting the results of the provided services in a human-readable as well as in a machine-readable form (in multiple formats) over the Web. \textit{``The primary means of publishing \gls{ld} on the Web is by making \gls{iri}s dereferenceable, thereby enabling the follow-your-nose style of data discovery. This should be considered the minimal requirements for Linked Data publishing''}\cite{bizer_emerging_2009}. This is also one of the criteria for the submission to the LOD cloud and is evaluated in section \ref{dicussion-chapter-evaluation:access}. Beside the assurance that all \gls{iri}s identifying resources are dereferenceable, there are other ways to publish \gls{ld}. One possibility is the provision of a \textit{\textbf{\gls{sparql} endpoint}}, which is a Web service that can process \gls{sparql} requests and returns the corresponding results. The advantage of \textit{\textbf{\gls{sparql} endpoints}} is that the end user can flexibly request a particular subset of the data stored in the local triple store. In this thesis no \textit{\textbf{\gls{sparql} endpoint}} will be accessible on the designed Web application, but the used triple store GraphDB offers one. Another approach are \textit{\textbf{RESTful APIs}} that potentially go beyond making resources dereferencable. \textit{``\textbf{RESTful APIs} are a programming interface implemented using HTTP and the principles of REST (Representational State Transfer) to allow actions on Web resources''}\cite{hyland_linked_????}. This is one of the approaches implemented by the proposed system (see next section). Another easy way to publish \gls{ld}, which is also implemented, is a simple \textit{\textbf{\gls{rdf} dump}} of the whole stored data. 
+The presentation layer is the uppermost layer of the proposed software system and is responsible for presenting the results of the provided services in a human-readable as well as in a machine-readable form (in multiple formats) over the Web. \textit{``The primary means of publishing \gls{ld} on the Web is by making \gls{iri}s dereferenceable, thereby enabling the follow-your-nose style of data discovery. This should be considered the minimal requirements for Linked Data publishing''}\cite{bizer_linked_2009}. This is also one of the criteria for the submission to the LOD cloud and is evaluated in section \ref{dicussion-chapter-evaluation:access}. Beside the assurance that all \gls{iri}s identifying resources are dereferenceable, there are other ways to publish \gls{ld}. One possibility is the provision of a \textit{\gls{sparql} endpoint}, which is a Web service that can process \gls{sparql} requests and returns the corresponding results. The advantage of \textit{\gls{sparql} endpoints} is that the end user can flexibly request a particular subset of the data stored in the local triple store. In this thesis no \textit{\gls{sparql} endpoint} will be provided by the designed Web application, but the used triple store GraphDB offers one. Another approach are \textit{RESTful APIs} that potentially go beyond making resources dereferencable. \textit{``RESTful APIs are a programming interface implemented using HTTP and the principles of REST (Representational State Transfer) to allow actions on Web resources''}\cite{hyland_linked_????}. This is one of the approaches implemented by the proposed system (see next section). Another easy way to publish \gls{ld}, which is also implemented, is a simple \textit{\gls{rdf} dump} of the whole stored data. 
 
-The previous mentioned approaches are mainly focusing on machines and are not necessarily convenient for the average human reader, but \textit{\textbf{RESTful APIs}} can for instance be adopted so that results will be returned in a human-readable representation like (X)HTML, if it is demanded by the client (e.g. by a browser) --- content negotiations. Due to the ability of nowadays search engines to extract knowledge provided by RDFa, mircrodata or \gls{json}-LD on regular Web pages, could it be useful to not only provide a human-friendly Web page, but to also include the presented data in a format that is understood by those crawlers into the rendered (X)HTML page. As mentioned in section \ref{related-work-geospatial-ontologies} in context of schema.org do search engines use this gathered \gls{ld} to enhance the search experience, but it only pays off, if the provided \gls{ld} is understood.
+The previous mentioned approaches are mainly focusing on machines and are not necessarily convenient for the average human reader, but \textit{RESTful APIs} can for instance be adopted so that results will be returned in a human-readable representation like (X)HTML, if it is demanded by the client (e.g. by a browser) --- content negotiations. Due to the ability of nowadays search engines to extract knowledge provided by RDFa, mircrodata or \gls{json}-LD on regular Web pages, could it be useful to not only provide a human-friendly Web page, but to also include the presented data in a format that is understood by those crawlers into the rendered (X)HTML page. As mentioned in section \ref{related-work-geospatial-ontologies} in context of schema.org do search engines use this gathered \gls{ld} to enhance the search experience, but it only pays off, if the provided \gls{ld} is understood.
 
-The role model for the designed Web application was DBPedia\footnote{\url{http://dbpedia.org/page/Vienna_University_of_Technology}}, which implements all of the mentioned approaches. All the resources are deferenceable and provide different formats on demand from Web pages to \gls{rdf} data in multiple formats. The human-friendly Web pages describing a resource also embeds machine-readable data using the format RDFa. DBPedia also offers an \textit{\textbf{\gls{sparql} endpoint}} and \textit{\textbf{\gls{rdf} dumps}}.
+The role model for the designed Web application was DBPedia\footnote{\url{http://dbpedia.org/page/Vienna_University_of_Technology}}, which implements all of the mentioned approaches. All the resources are deferenceable and different formats are available from human-readable Web pages to \gls{rdf} data. The human-friendly Web pages describing resources embed also the machine-readable equivalent using RDFa. DBPedia additionally offers an \textit{\gls{sparql} endpoint} and \textit{\gls{rdf} dumps}.
 
-\paragraph{To summarize} the Web application that constitutes the presentation layer of the proposed system implements a \textit{\textbf{RESTful API}} that not only returns descriptions of resources in a human- and machine-readable format, but also adds additional services like listing all known buildings or search services that are useful for the map application. The human-friendly Web pages also include the presented data in form of \gls{json}-LD. Figure \ref{fig:solution-architectural-prototype:restful-api} shows the tree of services concerning buildings. The blue node with the light-blue border is the start node, the blue nodes represent path segments except segments that are arguments, which are represented by green nodes. The red nodes are the end nodes.  Besides the \textit{\textbf{RESTful API}} also a \textit{\textbf{\gls{rdf} dump}} is available.
+\paragraph{To summarize} the Web application that constitutes the presentation layer of the proposed system implements a \textit{RESTful API} that not only returns descriptions of resources in a human- and machine-readable format, but also adds additional services like listing all known buildings or search services that are useful for the map application. The human-friendly Web pages also include the presented data in form of \gls{json}-LD. Figure \ref{fig:solution-architectural-prototype:restful-api} shows the tree of services concerning buildings. The blue node with the light-blue border is the start node, the blue nodes represent path segments except segments that are arguments, which are represented by green nodes. The red nodes are the end nodes.  Besides the \textit{RESTful API} also a \textit{\gls{rdf} dump} is available.
 
 \begin{figure}[h]
     \centering
@@ -748,54 +807,160 @@ The role model for the designed Web application was DBPedia\footnote{\url{http:/
     \label{fig:solution-architectural-prototype:restful-api}
 \end{figure}
 
-The Play Framework\footnote{\url{https://www.playframework.com/}} was chosen to realize this layer. It is a Web application framework that is actually written in Scala, but which also provides a Java wrapper. It follows the architectural pattern MVC (Model View Controller). The controllers act as a proxy for the root service factory of the service layer and the models are the \texttt{Dto}s returned by services. These \texttt{Dto}s build the foundation of the rendered view or are simple transformed in one of the supported \gls{rdf} formats (\gls{rdf}/\gls{xml}, Turtle, N-Triples, \gls{json}-LD, TRIG). 
+The Play Framework\footnote{\url{https://www.playframework.com/}} was chosen to realize this layer. It is a Web application framework that is actually written in Scala, but which also provides a Java wrapper. It follows the architectural pattern MVC (Model View Controller). The controllers act as a proxy for the root service factory of the service layer and the models are the \texttt{Dto}s returned by services. These \texttt{Dto}s build the foundation of the rendered view or are simple transformed in one of the supported \gls{rdf} formats (\gls{rdf}/\gls{xml}, Turtle, N-Triples, \gls{json}-LD, TRIG). Figure \ref{fig:solution-architectural-prototype:page-building} shows the rendered view for describing the resource \texttt{http://finder.tuwien.ac.at/spatial/building/id/H}, which is the building of the informatics institute. The resulting Web page offers then also controls for users to request the same resource in multiple \gls{rdf} formats or for generating a \gls{rdf} dump of the whole dataset. The response of computed services like for the request \texttt{http://finder.tuwien.ac.at/spatial/buildings}, which lists all known buildings, is similar to the description of resources and is shown in figure \ref{fig:solution-architectural-prototype:page-all-buildings}. \gls{rdf} collections are used in this case to present the result in \gls{rdf}. All the links to internal resources are intended to be derefenceable and the user can discover them by simply following the links (see section \ref{dicussion-chapter-evaluation:access} for evaluation). 
 
-\paragraph{Content negotiation}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{graphics/solution/app/building_description.png}
+    \caption{Human-friendly description of the building of the informatics institute}
+    \label{fig:solution-architectural-prototype:page-building}
+\end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{graphics/solution/app/allbuildings_description.png}
+    \caption{Human-friendly description of all known buildings}
+    \label{fig:solution-architectural-prototype:page-all-buildings}
+\end{figure}
+
+\paragraph{Content negotiation} is a mechanism part of \gls{http} that offers the ability to response with different representations of a resource identified by the same \gls{iri}; the user agent can negotiate the desired format with the server. The user agent thereby enters the mime-types of the desired format(s) into the \texttt{Accept} field of the \gls{http} header. Table \ref{tab:olution-architectural-prototype:format-table} shows the mime-types and formats that are supported by the proposed Web application. 
+
+\begin{table}
+  \centering
+  \begin{tabular}{| l | l | l |}
+    \hline 
+       Format & Target audience & Content type \\ \hline \hline
+       HTML & human & text/html \\ \hline
+       RDF & machine & application/rdf$+$xml \\ \hline
+       Turtle & machine & text/turtle \\ \hline
+       JSON-LD & machine & application/ld$+$json \\ \hline
+  \end{tabular}
+  \caption{Supported formats and their mime-types.}
+  \label{tab:olution-architectural-prototype:format-table}
+\end{table}
+
+In \gls{ld} development it is a common practice to use different \gls{iri}s for the real-word entity and the document that describe this real-word entity. This consequently allows to assert statements about the document like freshness separate from   the description of the real-world entity \cite{bizer_linked_2009}. There are two strategies for dereferencing resources that also influences the naming scheme. On one side 303 \gls{iri}s and on the other side hash \gls{iri}s. For this thesis the first strategy was used for resources, the second for concepts and properties of ontologies. 
+The client uses the \gls{iri} of the resource that shall be dereferenced to send a request to the Web application in case of the 303 strategy. The Web application analyses the \gls{http} header and responses with a redirect (\gls{http} status code 303) to a new location, where the document can be found in an accepted format. The disadvantage of this strategy is the fact that for each attempt of dereferenicng a \gls{iri} two \gls{http} requests are required. The University of Southampton uses this strategy as well for their exposed linked university data. It is noteworthy that the university furthermore uses different sub-domains for \gls{iri}s that point to the real-world entity and the document. The naming scheme of a building is \texttt{http://(id|rdf).ecs.soton.ac.uk/location/UoS/building/<Building>} \cite{cobden_ecs_????}. Section \ref{solution-architectural-prototype:ld-management} already discussed the naming scheme for resources, but in order to implement the 303 strategy some enhancements must be made. However, the implemented approach is different to the one of the University of Southampton and similar to DBPedia. As described by the proposed naming scheme, the \gls{iri} \texttt{<base>/<id>} points to a resource; \texttt{spatial/building/id/H} points for instance to the building with the identifier \textit{H}. As figure \ref{fig:solution-architectural-prototype:ld-publishing:machine-readable} shows, a user agent that wants to have a machine-readable description of a resource identified by a certain\gls{iri} will immediately get the response in the desired format; the redirection will be skipped. This is not the case, if the user agent demands a human-readable representation of the description as figure \ref{fig:solution-architectural-prototype:ld-publishing:human-readable} shows. The Web application will redirect the user agent to a new location that follows the pattern \texttt{<base>/page/<id>}. If an user accesses resources with a Web browser, in general the mime-type \texttt{text/html} will be in the \texttt{Accept} field and the user always gets the Web page describing the resource. Users, who want to download or take a look at the machine-readable description, can visit the \gls{iri} following the pattern '\texttt{<base>/data/<id>.<fileEnding>}' as shown in figure \ref{fig:solution-architectural-prototype:ld-publishing:force-machine-readable}. The file ending is an indication for the desired format; for \gls{rdf}/\gls{xml} the file ending is \texttt{rdf}, for Turtle it is \texttt{ttl}. Figure \ref{fig:solution-architectural-prototype:ld-publishing:404} shows the response, if the requested resource cannot be found, which is simply a message with \gls{http} status code 404.
+
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{graphics/solution/uri-strategy/uriStrategyMachineReadable.png}
     \caption{Requesting machine-readable representation of a given resource.}
     \label{fig:solution-architectural-prototype:ld-publishing:machine-readable}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{graphics/solution/uri-strategy/uriStrategyHumanReadable.png}
     \caption{Requesting human-readable representation of a given resource.}
     \label{fig:solution-architectural-prototype:ld-publishing:human-readable}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{graphics/solution/uri-strategy/uriStrategyErrorHandling.png}
     \caption{Requesting an unknown resource.}
-    \label{fig:solution-architectural-prototype:ld-publishing:human-readable}
+    \label{fig:solution-architectural-prototype:ld-publishing:404}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{graphics/solution/uri-strategy/uriStrategyForceMachineReadable.png}
     \caption{Forcing the return of a specific machine-readable representation.}
     \label{fig:solution-architectural-prototype:ld-publishing:force-machine-readable}
 \end{figure}
 
+\subparagraph{As example} the \gls{iri} \texttt{http://finder.tuwien.ac.at/spatial/building/\\id/H} references to the building of the informatics institute. If an user visits the given \gls{iri} with a Web browser, (s)he will be redirected to \texttt{http://finder.tuwien.ac.at/\\page/spatial/building/id/H}, which is the rendered Web page illustrated in figure \ref{fig:solution-architectural-prototype:page-building}. If the user wants to download the description of the building in Turtle format, (s)he must enter the \gls{iri} \texttt{http://finder.tuwien.ac.at/data/spatial/building/id/\\H.ttl}.
+
+As mentioned above, the Play Framework adheres to the architectural pattern MVC. The controllers simply act as proxy and passes the requests without tempering them to the root service factory. The controllers are responsible for the content negotiations and handling the \gls{http} responses including setting the correct \gls{http} status code. Listing \ref{lst:solution-architectural-prototype:ld-publishing:route} shows the route file of the Web application, which specifies which requests are delegated to which function. If the path of a request starts with \texttt{page} for instance, the rest of the path is passed to the \texttt{page()}-method of the \texttt{APIController}, which  passes it to the root service factory and renders the result or returns an error message, if the request was not successful.
+
+\begin{lstlisting}[frame=single, basicstyle=\tiny, caption=Route file of Play Web application, label={lst:solution-architectural-prototype:ld-publishing:route}]
+
+# Map application
+GET   /             controllers.MapSearchController.index
+# Assets
+GET   /assets/*file controllers.Assets.versioned(path="/public", file: Asset)
+
+# API
+GET  /page/*path    controllers.APIController.page(path)
+GET  /data/*path    controllers.APIController.serviceData(path)
+GET  /$path<(?!.*?public)(?!.*?page)(?!.*?data).*>
+                    controllers.APIController.service(path)
+\end{lstlisting}
 
 \section{Map application}
 \label{solution-map-application}
-\todo{A more comprehensive presentation of the user interface for humans to show the targeted use case.}
+The map application discussed in this section is intended to present a potential use-case of the \gls{ld} published by the proposed system. The map application is implemented using the Play Framework. In fact, it is embedded into the same Web application that is concerned with publishing \gls{ld}, but could easily operate separately with some extra work. The map application uses the same API as an external application would do. If the map application wants to display all known buildings, it passes the request \texttt{spatial/buildings} to the root service factory. In case of an external application such services must be requested over HTTP using the RESTful API. Consequently, the response in form of \gls{rdf} data must be processed appropriately by those external applications. If the application is written in Java, the application can use the Pinto framework in the same way as the service layer, which acts their as an assembler for \texttt{Dto}s. These are the additional steps that are skipped, when the map application is embedded. Figure \ref{fig:solution-architectural-map-app:buildings} shows the map application displaying (a subset of) all buildings of the \gls{tuv}.
 
-\begin{figure}[h]
+\begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{graphics/solution/app/building_description.png}
-    \caption{Forcing the return of a specific machine-readable representation.}
-    \label{fig:solution-architectural-prototype:ld-publishing:force-machine-readable}
+    \includegraphics[width=1.0\textwidth]{graphics/solution/app/map_application.png}
+    \caption{Snippet of the map application displaying all known buildings.}
+    \label{fig:solution-architectural-map-app:buildings}
+\end{figure}
+
+In order to create an interactive map application JavaScript is inevitable and an appropriate framework is required. For this thesis the OpenLayers 3\footnote{\url{https://openlayers.org/}} framework was used, which is quite easy to understand and flexible. OpenStreetMaps is the used source for the map, but also other sources like Bing Maps can be specified in OpenLayers 3. The framework allows the developer to add additional layers, which can consist of multiple shapes, to this map. Thus, a floor could form such a layer as an example; it can consist of the exterior border of the floor and \textit{geometries} of contained rooms. The characteristics like style and visibility can be changed dynamically, which allows the developer to add controls for switching floors. This is an important feature for this map application and is illustrated in figure \ref{fig:solution-architectural-prototype:page-building}. OpenLayers 3 allows the developer to add custom controls directly to the map and provides multiple event handlers like one that will fire, when the \textit{geometrie} of a certain \textit{feature} was clicked. The framework provides furthermore the ability to read multiple serializations of \textit{geometries} including \gls{wkt} and \gls{gml}. However, a major issue that has to be solved is the gap between the Play Framework and JavaScript concerning the rendered Web pages. Searching for a JavaScript framework that handles \gls{rdf} data was an option as last resort, but this option violates the MVC pattern advocated by the Play framework. The View should only be concerned with displaying information. The solution eventually was to make use of the rendering engine of the Play Framework (Scala) and inject the required information into the JavaScript code for the displayed map.
+
+\paragraph{Main case:} As mentioned in the problem description (see section \ref{intro-problem-description}), the use-case \textit{"Give me all learning rooms that are nearby that are free in a given time range and are accessible without obstacles for person with mobility-impairments"} should be the evidence for the potential of the published \gls{ld}. As discussed in section future work (see \ref{dicussion-chapter-future-work}) the subset of routes that were gathered only connects five rooms on the basement floor of one building, so that the data is unfortunately not sufficient for computing the part of the use case regarding accessible rooms. It could be  computed, but the result would  only consists of these five rooms at maxima (all have one accessible route). The service implemented for searching all rooms nearby has the \gls{iri} '\texttt{<base>/search/freerooms/startdate/<date>/enddate/<date>/nearby/\\<long,lat>}'. Listing \ref{lst:map-application-free-room-service} shows the implementation of the service using \gls{sparql}. The value of the bindings are the arguments that are given in the service request. For removing all not accessible rooms, \gls{sparql} is not sufficient as discussed in section \ref{solution-ontology-prototype:navigation}, but it can be solved by using a simple path finding algorithm that takes the input of the \gls{sparql} query shown in listing \ref{lst:solution-ontology-prototype:navigation:prepare}.
+
+\begin{lstlisting}[frame=single, basicstyle=\small, caption=\gls{sparql} query for all free rooms nearby.
+, label={lst:map-application-free-room-service}]
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX schema: <http://schema.org/>
+Prefix gsp: <http://www.opengis.net/ont/geosparql#>
+PREFIX sf: <http://www.opengis.net/ont/sf#>
+PREFIX gspf: <http://www.opengis.net/def/function/geosparql/>
+PREFIX uom: <http://www.opengis.net/def/uom/OGC/1.0/>
+PREFIX tuvs: <http://finder.tuwien.ac.at/vocab/spatial#>
+
+Describe ?room where {
+    ?room a tuvs:LearningRoom .
+    # Sets the desired time frame for a free room
+    BIND("2016-10-06T13:00:00+01:00"^^xsd:dateTime as ?tfBegin) .
+    BIND("2016-10-06T14:00:00+01:00"^^xsd:dateTime as ?tfEnd) .
+    # Filter for free rooms
+    FILTER NOT EXISTS{
+        ?event a schema:Event ;
+            schema:location ?room ;
+            schema:startDate ?startDate ;
+            schema:endDate ?endDate .
+        FILTER(!((?startDate < ?tfBegin && ?tfBegin >= ?endDate)
+                   || (?startDate >= ?tfEnd && ?tfEnd < ?endDate))) .
+    }
+    # Get the building of which the room is a part 
+    ?building tuvs:containsBuildingUnit ?room ;
+        gsp:hasGeometry ?buildingPoint .
+    # Order rooms by the distance to a certain point
+    ?buildingPoint a sf:Point ;
+        gsp:asWKT ?buildingPointAsWKT .
+    BIND("POINT(16.3699039 48.1989798)"^^gsp:wktLiteral as ?hereWKT) .
+} ORDER BY ASC(gspf:distance(?hereWKT, ?buildingPointAsWKT,
+                 uom:metre))
+\end{lstlisting}
+
+Figure \ref{fig:solution-architectural-map-app:freerooms} shows the result of the request '\texttt{<base>/search/freerooms/startdate/\\2016-10-06T13:00:00+01:00/enddate/2016-10-06T14:00:00+01:00/\\nearby/16.3701504,48.19490159999999}', which searches for free learning rooms between 1 pm and 2 pm on the 6th of October in near distance to the given point. It was assumed that all lecture halls, seminar rooms and laboratories can be used as learning room. This is actually not the case, but this can be easily changed.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.35\textwidth]{graphics/solution/app/serachForFreeRooms.png}
+    \caption{Snippet of the map application displaying free learning rooms near the building of the informatics institute.}
+    \label{fig:solution-architectural-map-app:freerooms}
+\end{figure}
+
+\paragraph{Expected use case:} One of the expected functionalities of such map applications is the ability to search for spatial entities with known keywords. This is can easily be implemented with a \gls{sparql} query. However, there are more specialised solution like Lucene\footnote{\url{http://lucene.apache.org/core/}} that perform better than a \gls{sparql} query; offer also more functions for text search. The \gls{iri} for this service follows the pattern '\texttt{<base>/search/for/<keywords>}'. Figure \ref{fig:solution-architectural-map-app:rooms-match-keyword} shows the result for the request '\texttt{<base>/search/for/Zemanek}'.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1.0\textwidth]{graphics/solution/app/searchFor.png}
+    \caption{Snippet of the map application displaying spatial features matching the keyword 'Zemanek'.}
+    \label{fig:solution-architectural-map-app:rooms-match-keyword}
 \end{figure}
 
 \chapter{Discussion}
 \label{discussion-chapter}
 
-This chapter is dealing with the evaluation of the proposed solution (see section \ref{dicussion-chapter-evaluation}) considering the quality measurements outlined in the introduction (see chapter \ref{introduction-chapter}). Section \ref{dicussion-chapter-future-work} discusses short comings of the proposed solution and potential enhancements. Conclusion are drawn in the final section \ref{dicussion-chapter-conclusion}.
+This chapter is dealing with the evaluation of the proposed solution (see section \ref{dicussion-chapter-evaluation}) considering the quality measurements outlined in the introduction (see chapter \ref{introduction-chapter}). Section \ref{dicussion-chapter-future-work} discusses shortcomings of the proposed solution and potential enhancements. Conclusion are drawn in the final section \ref{dicussion-chapter-conclusion}.
 
 \section{Evaluation}
 \label{dicussion-chapter-evaluation}
@@ -822,7 +987,7 @@ The spatial dataset has in total \textbf{16295} triples describing spatial entit
     \label{fig:dicussion-chapter-evaluation:dataset}
 \end{figure}
 
-Overall the majority of the resources describe rooms followed by floor sections and floors. Table \ref{tab:dicussion-chapter-evaluation:dataset} shows this distribution (for each resource the most specific types were chosen; which have no known subclasses). For this thesis only a little subset of \textit{geometries} and navigation routes were actually gathered and integrated; only for the basement of the informatics building. Hence, these types of resources are under-represented; especially, the navigation routes. If applied to  all buildings of the university, points of routes and routes will be leading the chart by a lot, due to the chosen approach for modelling navigation (see section \ref{solution-ontology-prototype:navigation}).
+Overall the majority of the resources describe rooms followed by floor sections and floors. Table \ref{tab:dicussion-chapter-evaluation:dataset} shows this distribution (for each resource the most specific types were chosen; which have no known subclasses). For this thesis only a restricted subset of \textit{geometries} and navigation routes were actually gathered and integrated; only for the basement of the informatics building. Hence, these types of resources are under-represented; especially, the navigation routes. If applied to  all buildings of the university, points of routes and routes will be leading the chart by a lot, due to the chosen approach for modelling navigation (see section \ref{solution-ontology-prototype:navigation}).
 
 \begin{table}
   \centering
@@ -868,16 +1033,45 @@ Figure \ref{fig:dicussion-chapter-evaluation:linking} shows a visualization of \
 
 \subsection{Access}
 \label{dicussion-chapter-evaluation:access}
-\todo{Access}
+The remaining points of the submission criteria are concerned with the access of the published resources. The first point expects that the resources can be resolved using \gls{http}, which is also one of the \gls{ld} principles and was therefore considered in the design process. The second point claims that the resource shall be available in at least one common machine-readable representation (e.g. \gls{rdf}/\gls{xml}). This was considered in the design process as well and there are multiple formats that are supported as shown by table \ref{tab:olution-architectural-prototype:format-table}. Unit 
+tests were implemented for both mentioned points to check if the system behaves as expected. The unit tests simply analyses a given \gls{rdf} dump of the triple store and requests all resources that are in scope of the system (start with \texttt{http://finder.tuwien.ac.at}). The final point claims that the whole published dataset shall either be collectable by crawling/following links, be queryable using \gls{sparql} or provide a \gls{rdf} dump. However, the proposed system does not provide a \gls{sparql} endpoint, neither was it checked, if all resources are collectable by simply following links. Nevertheless, if the crawler starts with the catalog dataset, which contains meta-information about the other datasets, it can simply request the whole dataset by resolving its \gls{iri}. \texttt{http://finder.tuwien.ac.at/spatial} for instance returns all spatial data; but this crawling attempt was not tested. The tested solution for this point was  a \gls{rdf} dump. In this case the \gls{rdf} dump of the database was compared to the \gls{rdf} dump returned by the proposed system; both should contain the same statements. Additionally to the unit tests that test if the submission criteria to the LOD cloud are fulfilled, 32 unit tests prioritizing the most important services (e.g. \texttt{DescribeResourceService}) were written. 
 
 \section{Further work}
 \label{dicussion-chapter-future-work}
-\todo{Enter your text here.}
+The aim of this thesis was to transform a subset of spatial data of the \gls{tuv} into \gls{ld} and to show a potential use case for this data.  Except for the information that was provided by the RESTful API of the central information system, the spatial information was mainly gathered manually. This included Web scrapping, the extraction of tables from \gls{pdf} files and the transformation of floor plans into machine-readable data. This approach is applicable for designing a prototype, but the tasks that have to be carried out are too time consuming and error-prone to deploy such a system. In case of tables that are presented on Web pages or \gls{pdf} files as it is done by the facility management unit of the \gls{tuv}, it would be possible without much effort to provide this information in a \gls{csv} file at a fixed location. This would simplify the integration process in no small measure; it has not necessarily to be full-fledged \gls{ld}. 
+
+The transformation of floor plans into machine-readable data is a further issue that needs some future work. As mentioned, the manual approach is quite time consuming and error-prone, which is why this task should better be automated in order to be scalable. Extracting geometric data managed by facility management systems (e.g. CAMF) or providing floor plans as vector graphics could simplify the task and be a step towards automation. When the floor plan was eventually transformed into \gls{ld}, one questions remains, how shall possible routes in an indoor environment be computed. Kostic et. al. proposed an algorithm for generating accessibility information for mobility impaired individuals \cite{kostic_automated_2015-1}; this algorithm requires a adequate input spatial model.
+
+Both proposed ontologies cover the main concepts that were required for modelling data about university facilities and indoor navigation. However, the navigation ontology needs some further testing and proof whether the chosen approach is scalable. In case of the proposed system that dealt with a little subset of the data (only one floor in one building), the navigation resources made up approximately 7\% of overall resources.  
+
+The proposed map application and also the services provided by the service layer are quite limited yet. Especially, services concerning links to local amenities described by LinkedGeoData could be interesting for end user, but are currently missing. Such services could answer question like \textit{give me all cafés/asian restaurants that are in acceptable distance to a certain lecture room}. The interlinking of local spatial data to external data sources like GeoNames and LinkedGeoData does currently only consider \texttt{owl:sameAs} and \texttt{foaf:based\_near} statements, potentially ignoring spatial \texttt{features} that are farer away than 100 meters, but still valuable. Furthermore, the proposed system is currently read-only and does not allow any contributions. However, contributions from end user could be quite valuable. Students could mark places for learning as well as recommend pubs and bars on the university campus. Also interest groups like TUBarrierefrei could contribute information for person with disabilities.
+
+In order to clarify legal concerns regarding the reuse of data, a data license is recommended and it should be commonly agreed among data owners which license to choose. The absence of such a data license can lead to a situation where application developers hesitate to reuse the data and little effort may be taken to build costly application if the terms of reuse are unclear. Some licenses that evolved over time are Public Domain Dedication and License\footnote{\url{http://opendatacommons.org/licenses/pddl/}} (PDDL), Attribution License\footnote{\url{http://opendatacommons.org/licenses/by/}} (ODC-By) and Open Database License\footnote{\url{http://opendatacommons.org/licenses/odbl/}} (ODbL).
 
 \section{Conclusion}
 \label{dicussion-chapter-conclusion}
 
-\todo{Enter your text here.}
+Universities have to manage a significant amount of data and due to the complexity of the domain of a university, there is not a single information system that handle all of it. It is likely for such an environment to result in independent systems, which encapsulate their managed information into disconnected data silos that may have different data owner and formats; potentially spread over different departments. As a result, the information managed by all those systems cannot be easily interlinked, which prevents universities of fully exploiting their data.
+
+This thesis aimed to show that there is a neglected potential in the spatial data at the \gls{tuv}, which is in fact distributed over multiple different sources. The goal was to transform a subset of the available spatial data into \gls{ld}, to propose an architecture for the integration and publication as well as providing an use case for the generated \gls{ld}. The resulting \gls{ld} is intended to give application developers an incentive to create application, which implement ideas from which the information environment at the university benefits. 
+
+The proposed software system transforms the data from different data sources with different formats into a representation conform to the proposed ontology and integrates the result into a local storage. This knowledge base will then be published and is thenceforward accessible over a RESTful API. The original format of the data ranged from tables embedded into Web pages and \gls{pdf} files to \gls{xml} responses of a RESTful API. The gathering and preparation for the integration was mainly carried out manually except for the information provided by the API --- proofing the claimed barriers, which are costly to overcome for developers. In case of floor and navigation plans the integration included only a little subset of the actual available data, due to the time consuming task of transforming it into a machine-readable format. The used approach for the prototype proposed by this thesis would not be scalable for all facilities of the \gls{tuv}. Some of the integrated data was gathered and transformed manually, which causes the problem that changes to the manually gathered data in the original data source are not detectable by the software system and must be updated manually. As mentioned in future work (see section \ref{dicussion-chapter-future-work}) in case of information published in \gls{pdf} files or on Web pages, it would be possible without much effort to provide this information in a \gls{csv} file at a fixed location; this simplifies the integration considerably. This is something the data owner must be convinced of. The biggest challenge is to transform the floor plans automatically into the desired representation, which was not solved by this thesis. 
+
+The proposed map application presents a potential use case for the data published by the proposed software system. The used Java framework RDF4J for handling \gls{rdf} data is quite new and some tweaking was required to get other frameworks like Pinto and schema generation running. The map application provides expected services like searching for spatial \texttt{features} using keywords like the name of a certain place (room, building, etc.), but also services that require data from different sources like finding all free learning rooms at a given time range that are nearby. The filtering for rooms that are accessible for person with mobility impairments was unfortunately not implemented, due to the absence of navigation data exceeding five rooms. The map application in its current form is improvable. Links to resources of LinkedGeoData resulting from the internal linking can be used to search for local amenities like cafés, bars and restaurants that are near university buildings. The allowance of contribution of users (from students to interest groups) to the current spatial data might also be valuable. But as not to hang on a single application or use case, one of the incitements of publishing the spatial data as \gls{lod} is the hope, that there is an audience, that will come up with creative ideas of which you and I are currently not thinking about.
+
+\chapter{Appendix}
+\label{appendix}
+
+\section{Spatial ontology}
+\label{appendix-spatial-ontology}
+
+\lstinputlisting[language=turtle, basicstyle=\scriptsize]{appendix/tuViennaSpatialOntology.ttl}
+
+\section{Navigation Ontology}
+\label{appendix-navigation-ontology}
+
+\lstinputlisting[language=turtle, basicstyle=\scriptsize]{appendix/tuViennaNavigationOntology.ttl}
+
 
 \backmatter
 
@@ -886,10 +1080,6 @@ Figure \ref{fig:dicussion-chapter-evaluation:linking} shows a visualization of \
 
 % Use an optional list of tables.
 \listoftables % Starred version, i.e., \listoftables*, removes the toc entry.
-
-% Use an optional list of alogrithms.
-\listofalgorithms
-\addcontentsline{toc}{chapter}{List of Algorithms}
 
 % Add an index.
 \printindex
